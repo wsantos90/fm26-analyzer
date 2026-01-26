@@ -43,6 +43,7 @@ Veja mais sobre [deployment](https://facebook.github.io/create-react-app/docs/de
 Se você não estiver satisfeito com as configurações de build, pode executar `eject` a qualquer momento. Este comando removerá a dependência única de build do seu projeto e copiará todos os arquivos de configuração (webpack, Babel, ESLint, etc) diretamente para o projeto, dando controle total sobre eles.
 
 ---
+![WhatsApp Image 2026-01-26 at 09 59 49 (4)](https://github.com/user-attachments/assets/97976dfe-547c-4701-93d4-b3d8ab28e700)
 
 ## ✅ Funcionalidades Implementadas
 
@@ -152,3 +153,7 @@ Time,Nome,Nacionalidades,Idade,Pé Esquerdo,Pé Direito,...
 FC Schalke 04,Yassin Ben Balla,France,Morocco,29,6,20,...
 FC Schalke 04 S19,Zaid Tchibara,Togo,Germany,19,9,20,...
 ```
+
+
+
+
