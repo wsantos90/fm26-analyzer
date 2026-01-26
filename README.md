@@ -149,6 +149,75 @@ Se você não estiver satisfeito com as configurações de build, pode executar 
 48-51: Salário/Contrato
 52-65: Posições
 ```
+Time
+Nome
+Nacionalidades
+Idade
+Pé Esquerdo
+Pé Direito
+Altura
+Aceleração
+Agilidade
+Equilíbrio
+Pulo
+Cond. Física Natural
+Velocidade
+Resistência
+Força
+Agressão
+Antecipação
+Bravura
+Frieza
+Concentração
+Decisões
+Determinação
+Talento
+Sem a Bola
+Posicionamento
+Trabalho em Equipe
+Visão
+Índice de Trabalho
+Cruzamento
+Drible
+Finalização
+Toque de Primeira
+Cabeçada
+Chutes de Longe
+Marcação
+Passe
+Desarme
+Técnica
+Habilidade Aérea
+Comando de Área
+Comunicação
+Excentricidade
+Jogo de Mãos
+Pontapé
+Um para Um
+Reflexos
+Saídas
+Lançamentos
+Salário
+Data Expira
+Situação de Transferência
+Preço Exigido
+Meia-Atacante Central
+Meia-Atacante Esquerdo
+Meia-Atacante Direito
+Zagueiro
+Lateral Esquerdo
+Lateral Direita
+Volante
+Goleiro
+Meio-Campo
+Meia-Esquerda
+Meia-Direita
+Ponta-de-lança
+Ala Esquerda
+Ala Direita
+
+
+
 
 **Exemplo:**
 
