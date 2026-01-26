@@ -63,12 +63,14 @@ Se você não estiver satisfeito com as configurações de build, pode executar 
 
 - Botão de Reset para limpar dados antigos
 - Confirmação de segurança contra cliques acidentais
+![WhatsApp Image 2026-01-26 at 09 59 49](https://github.com/user-attachments/assets/6c3d894e-631a-48ed-bca2-67f6fea8fc7f)
 
 ### 🔍 Análise Profunda de Atributos
 
 - Modal com abas: **Visão Geral** e **Atributos Completos**
 - Destaque inteligente de atributos essenciais para cada posição
 - Grade com todos os números (Físico, Mental, Técnico)
+![WhatsApp Image 2026-01-26 at 09 59 49 (3)](https://github.com/user-attachments/assets/31dae2db-79ed-4805-8388-5c751e394d76)
 
 ### 🔄 Contexto Dinâmico (Multifunção)
 
@@ -81,6 +83,7 @@ Se você não estiver satisfeito com as configurações de build, pode executar 
 - Sugestão de pontos fracos contextual à posição selecionada
 - Foca em atributos que precisam evoluir (< 13)
 - Ignora atributos irrelevantes para a função
+![WhatsApp Image 2026-01-26 at 09 59 49 (2)](https://github.com/user-attachments/assets/a263b857-86f7-4a24-8275-6a91e93976c6)
 
 ### 🏷️ Categorias de Jogadores (PT-BR)
 
@@ -92,6 +95,7 @@ Se você não estiver satisfeito com as configurações de build, pode executar 
 | **Nível Baixo** | 🟠 Laranja | Nota < 10 (não veterano) |
 | **Rotação** | ⚪ Cinza | Nota intermediária |
 | **Vender** | 🔴 Vermelho | ≥ 29 anos e Nota < 10 |
+![WhatsApp Image 2026-01-26 at 09 59 49 (1)](https://github.com/user-attachments/assets/3953bcb7-b7f6-4aa1-9057-80314b48a43e)
 
 ### 🛡️ Filtros Hierárquicos
 
@@ -154,6 +158,7 @@ FC Schalke 04,Yassin Ben Balla,France,Morocco,29,6,20,...
 FC Schalke 04 S19,Zaid Tchibara,Togo,Germany,19,9,20,...
 ```
 
+![WhatsApp Image 2026-01-26 at 09 59 49 (6)](https://github.com/user-attachments/assets/77b252f3-156e-402f-a384-20b3904dac94)
 
 
 
