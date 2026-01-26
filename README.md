@@ -1,46 +1,154 @@
-# Getting Started with Create React App
+# ⚽ FM26 Analyzer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+App de análise tática para Football Manager 2026, criado com [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🚀 Como Abrir o Projeto
+
+No diretório do projeto, você pode executar:
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Executa o app em modo de desenvolvimento.  
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Abra http://localhost:3000 para visualizar no navegador.
+
+A página será recarregada automaticamente quando você fizer edições.  
+
+Você também verá erros de lint no console.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Inicia o executor de testes em modo interativo.  
+
+Veja mais sobre [execução de testes](https://facebook.github.io/create-react-app/docs/running-tests).
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Compila o app para produção na pasta `build`.  
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Empacota o React corretamente em modo de produção e otimiza para melhor performance.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+O build é minificado e os nomes dos arquivos incluem hashes.  
+
+Seu app está pronto para deploy!
+
+Veja mais sobre [deployment](https://facebook.github.io/create-react-app/docs/deployment).
 
 ### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+⚠️ **Atenção: esta é uma operação irreversível. Uma vez que você executar `eject`, não há como voltar!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Se você não estiver satisfeito com as configurações de build, pode executar `eject` a qualquer momento. Este comando removerá a dependência única de build do seu projeto e copiará todos os arquivos de configuração (webpack, Babel, ESLint, etc) diretamente para o projeto, dando controle total sobre eles.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+---
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## ✅ Funcionalidades Implementadas
 
-## Learn More
+### 🎯 Ranking de Formações Inteligente
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Analisa o elenco em **9 formações disponíveis**
+- Recomenda as 3 melhores formações para seu time
+- Clique na formação sugerida para carregá-la instantaneamente
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 📱 Comparador Lateral (Sidebar)
+
+- Barra lateral à direita para comparar jogadores
+- Não bloqueia a tela, permitindo interação simultânea
+- Mais espaço para gráficos de radar
+
+### ⚙️ Gestão de Histórico
+
+- Botão de Reset para limpar dados antigos
+- Confirmação de segurança contra cliques acidentais
+
+### 🔍 Análise Profunda de Atributos
+
+- Modal com abas: **Visão Geral** e **Atributos Completos**
+- Destaque inteligente de atributos essenciais para cada posição
+- Grade com todos os números (Físico, Mental, Técnico)
+
+### 🔄 Contexto Dinâmico (Multifunção)
+
+- Analise jogadores polivalentes em diferentes posições
+- Recálculo instantâneo de pontos fortes, treino e destaques
+- Clique nas "Melhores Posições" para mudar o contexto
+
+### 🧠 Treinamento Inteligente (Smart Training)
+
+- Sugestão de pontos fracos contextual à posição selecionada
+- Foca em atributos que precisam evoluir (< 13)
+- Ignora atributos irrelevantes para a função
+
+### 🏷️ Categorias de Jogadores (PT-BR)
+
+| Categoria | Cor | Critério |
+| --- | --- | --- |
+| **Elite** | 🟡 Amarelo | Nota ≥ 14 |
+| **Titular** | 🟢 Verde | Nota ≥ 12.5 |
+| **Promessa** | 🟣 Roxo | ≤ 21 anos e Nota ≥ 10.5 |
+| **Nível Baixo** | 🟠 Laranja | Nota < 10 (não veterano) |
+| **Rotação** | ⚪ Cinza | Nota intermediária |
+| **Vender** | 🔴 Vermelho | ≥ 29 anos e Nota < 10 |
+
+### 🛡️ Filtros Hierárquicos
+
+**Nível 1 - Times:**
+
+- Todos os Times
+- Time Principal (Azul)
+- Sub-19/20 (Roxo)
+- Time 2 (Cinza)
+- Emprestados (Laranja)
+
+**Nível 2 - Categorias:**
+
+- Elite, Titular, Promessa, Rotação, Nível Baixo, Vender
+
+### ⚽ 9 Formações Táticas
+
+- 4-3-3
+- 3-5-2
+- 4-2-3-1
+- 4-4-2 Diamond
+- 4-1-2-3
+- 5-4-1
+- 3-4-3
+- 4-3-1-2
+- 3-4-2-1
+
+### 🖱️ Melhorias de Usabilidade
+
+- Modal detalhado acessível de qualquer card
+- Comparar sem interrupção (não abre o perfil)
+- Badges coloridos de time nos cards
+- Cursor pointer indicando interatividade
+
+---
+
+## 📊 Mapeamento CSV
+
+⚠️ **IMPORTANTE**: A coluna "Time" deve ser a PRIMEIRA coluna.
+
+```
+0: Time
+1: Nome
+2: Nacionalidades
+3: Idade
+4-6: Pés/Altura
+7-14: Físicos
+15-27: Mentais
+28-37: Técnicos
+38-47: Goleiro
+48-51: Salário/Contrato
+52-65: Posições
+```
+
+**Exemplo:**
+
+```
+Time,Nome,Nacionalidades,Idade,Pé Esquerdo,Pé Direito,...
+FC Schalke 04,Yassin Ben Balla,France,Morocco,29,6,20,...
+FC Schalke 04 S19,Zaid Tchibara,Togo,Germany,19,9,20,...
+```
