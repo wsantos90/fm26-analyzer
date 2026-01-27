@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Users, Play, RotateCw, BarChart3 } from 'lucide-react';
+import { Shield, Users, Play, RotateCw, BarChart3, Trophy } from 'lucide-react';
 import { useTactics } from '../hooks/useTactics';
 import { Player } from '../types';
 
@@ -19,6 +19,7 @@ const TacticsBoard: React.FC<TacticsBoardProps> = ({ players }) => {
     clearLineup,
     getLineupStrength,
     getFormationBalance,
+    recommendedFormations,
   } = useTactics(players);
 
   const getSlotColor = (slot: any) => {
@@ -56,6 +57,48 @@ const TacticsBoard: React.FC<TacticsBoardProps> = ({ players }) => {
 
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      {/* Recommended Formations */}
+      {recommendedFormations.length > 0 && (
+        <div className="bg-gradient-to-r from-blue-900/40 to-purple-900/40 backdrop-blur-md p-6 rounded-xl border border-white/10 shadow-xl">
+          <h3 className="text-white font-black mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">
+            <Trophy size={16} className="text-yellow-500" />
+            Melhores Formações para seu Elenco
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {recommendedFormations.map((rec, index) => (
+              <button
+                key={rec.name}
+                onClick={() => {
+                  setSelectedFormation(rec.name);
+                  setTimeout(() => generateLineup(), 100);
+                }}
+                className="flex items-center justify-between p-4 bg-black/40 hover:bg-white/10 border border-white/5 hover:border-blue-500/50 rounded-lg transition-all group"
+              >
+                <div className="flex items-center gap-3">
+                  <span
+                    className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
+                      index === 0
+                        ? 'bg-yellow-500 text-black'
+                        : index === 1
+                          ? 'bg-slate-300 text-black'
+                          : 'bg-orange-700 text-white'
+                    }`}
+                  >
+                    {index + 1}
+                  </span>
+                  <span className="text-white font-bold">
+                    {rec.name.replace('-', ' ')}
+                  </span>
+                </div>
+                <span className="text-green-400 font-bold text-sm">
+                  {rec.score.toFixed(0)} pts
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Controls */}
       <div className="bg-slate-900/60 backdrop-blur-md p-6 rounded-xl border border-white/5 shadow-xl">
         <div className="flex flex-wrap gap-4 items-center justify-between">

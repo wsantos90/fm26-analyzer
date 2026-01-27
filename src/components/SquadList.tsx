@@ -152,7 +152,9 @@ const SquadList: React.FC<SquadListProps> = ({
               <span
                 className={`text-[10px] px-2 py-0.5 rounded font-black uppercase tracking-wider border ${getCategoryColor(player.category)}`}
               >
-                {player.category.replace('_', ' ')}
+                {player.category === 'baixo_nivel'
+                  ? 'Nível Baixo'
+                  : player.category}
               </span>
             </div>
 

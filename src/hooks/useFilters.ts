@@ -34,7 +34,8 @@ export const useFilters = (players: Player[]) => {
       );
     }
 
-    return filtered;
+    // Sort by mainScore descending (best to worst)
+    return filtered.sort((a, b) => b.mainScore - a.mainScore);
   }, [players, selectedTeam, selectedCategory, searchTerm]);
 
   const uniqueTeams = useMemo(() => {

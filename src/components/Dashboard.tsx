@@ -7,19 +7,42 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
-import { Trophy, Users, TrendingUp, Activity } from 'lucide-react';
+import {
+  Trophy,
+  Users,
+  TrendingUp,
+  Activity,
+  Trash2,
+  AlertTriangle,
+} from 'lucide-react';
 import { Player } from '../types';
 
 interface DashboardProps {
   players: Player[];
   statistics: any;
+  onReset: () => void;
 }
 
-const Dashboard: React.FC<DashboardProps> = ({ players, statistics }) => {
-  const categoryData = Object.entries(statistics.byCategory).map(
-    ([category, count]) => ({
-      name: category.replace('_', ' ').toUpperCase(),
-      count: count as number,
+const Dashboard: React.FC<DashboardProps> = ({
+  players,
+  statistics,
+  onReset,
+}) => {
+  const [showResetConfirm, setShowResetConfirm] = React.useState(false);
+
+  const categoryOrder = [
+    'elite',
+    'titular',
+    'promessa',
+    'rotacao',
+    'baixo_nivel',
+    'vender',
+  ];
+
+  const categoryData = categoryOrder
+    .map(category => ({
+      name: category === 'baixo_nivel' ? 'NÍVEL BAIXO' : category.toUpperCase(),
+      count: statistics.byCategory[category] || 0,
       color:
         category === 'elite'
           ? '#fbbf24'
@@ -27,23 +50,13 @@ const Dashboard: React.FC<DashboardProps> = ({ players, statistics }) => {
             ? '#34d399'
             : category === 'promessa'
               ? '#a78bfa'
-              : '#64748b',
-    })
-  );
-
-  const teamTypeData = Object.entries(statistics.byTeamType).map(
-    ([teamType, count]) => ({
-      name:
-        teamType === 'main'
-          ? 'Principal'
-          : teamType === 'youth'
-            ? 'Sub-19/20'
-            : teamType === 'reserve'
-              ? 'Reserva'
-              : 'Emprestado',
-      count: count as number,
-    })
-  );
+              : category === 'rotacao'
+                ? '#64748b'
+                : category === 'vender'
+                  ? '#f87171'
+                  : '#fb923c',
+    }))
+    .filter(item => item.count > 0);
 
   const topPlayers = [...players]
     .sort((a, b) => b.mainScore - a.mainScore)
@@ -58,7 +71,53 @@ const Dashboard: React.FC<DashboardProps> = ({ players, statistics }) => {
     }));
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 relative">
+      {/* Reset Confirm Modal */}
+      {showResetConfirm && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[50] p-6">
+          <div className="bg-slate-900 border border-white/10 p-6 rounded-xl max-w-sm w-full shadow-2xl space-y-4 animate-in zoom-in-95 duration-200">
+            <div className="flex items-center gap-3 text-red-500">
+              <AlertTriangle size={32} />
+              <h3 className="font-bold text-lg text-white">
+                Resetar Histórico?
+              </h3>
+            </div>
+            <p className="text-slate-400 text-sm">
+              Isso apagará todos os dados carregados e resetará a análise. Essa
+              ação não pode ser desfeita.
+            </p>
+            <div className="flex gap-3 pt-2">
+              <button
+                onClick={() => setShowResetConfirm(false)}
+                className="flex-1 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-bold text-sm transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={() => {
+                  onReset();
+                  setShowResetConfirm(false);
+                }}
+                className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg font-bold text-sm transition-colors"
+              >
+                Sim, Resetar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Header Actions */}
+      <div className="flex justify-end">
+        <button
+          onClick={() => setShowResetConfirm(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/20 rounded-lg text-xs font-bold transition-all"
+        >
+          <Trash2 size={14} />
+          Resetar Histórico
+        </button>
+      </div>
+
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="bg-slate-900/60 backdrop-blur-md p-6 rounded-xl border border-white/5 hover:bg-slate-900/80 transition-all shadow-lg group">
@@ -121,7 +180,7 @@ const Dashboard: React.FC<DashboardProps> = ({ players, statistics }) => {
       </div>
 
       {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 gap-8">
         {/* Category Distribution */}
         <div className="bg-slate-900/60 backdrop-blur-md p-8 rounded-xl border border-white/5 shadow-xl">
           <h3 className="text-white font-black mb-6 flex items-center gap-3 text-lg uppercase tracking-wider">
@@ -141,29 +200,6 @@ const Dashboard: React.FC<DashboardProps> = ({ players, statistics }) => {
                 labelStyle={{ color: '#f1f5f9' }}
               />
               <Bar dataKey="count" fill="#3b82f6" radius={[8, 8, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Team Type Distribution */}
-        <div className="bg-slate-900/60 backdrop-blur-md p-8 rounded-xl border border-white/5 shadow-xl">
-          <h3 className="text-white font-black mb-6 flex items-center gap-3 text-lg uppercase tracking-wider">
-            <Users size={20} className="text-blue-500" />
-            Distribuição por Time
-          </h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={teamTypeData}>
-              <XAxis dataKey="name" tick={{ fill: '#94a3b8', fontSize: 12 }} />
-              <YAxis tick={{ fill: '#94a3b8', fontSize: 12 }} />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: '#1e293b',
-                  border: '1px solid #334155',
-                  borderRadius: '8px',
-                }}
-                labelStyle={{ color: '#f1f5f9' }}
-              />
-              <Bar dataKey="count" fill="#8b5cf6" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

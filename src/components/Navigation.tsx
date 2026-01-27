@@ -1,5 +1,11 @@
 import React from 'react';
-import { BarChart3, Users, Shield, CheckCircle } from 'lucide-react';
+import {
+  BarChart3,
+  Users,
+  Shield,
+  CheckCircle,
+  LayoutGrid,
+} from 'lucide-react';
 
 interface NavigationProps {
   activeTab: string;
@@ -8,7 +14,8 @@ interface NavigationProps {
 
 const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab }) => {
   const tabs = [
-    { id: 'dashboard', label: 'VISÃO GERAL', icon: BarChart3 },
+    { id: 'structure', label: 'ESTRUTURA', icon: LayoutGrid },
+    { id: 'dashboard', label: 'ANÁLISE', icon: BarChart3 },
     { id: 'squad', label: 'ELENCO', icon: Users },
     { id: 'tactics', label: 'TÁTICAS', icon: Shield },
     { id: 'guide', label: 'MANUAL', icon: CheckCircle },

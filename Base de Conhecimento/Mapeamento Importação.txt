@@ -1,0 +1,93 @@
+## 📊 Mapeamento CSV
+
+⚠️ **IMPORTANTE**: 
+- O CSV **NÃO TEM CABEÇALHO** - os dados começam diretamente na primeira linha
+- A coluna "Time" deve ser a PRIMEIRA coluna (índice 0)
+
+
+
+**Nota**: O sistema detecta automaticamente o tipo de time baseado no nome:
+- `S19`, `S20`, etc. → Sub-19/20 (roxo)
+- Contém `EMP` → Emprestados (laranja)
+- Termina com espaço + número → Reserva (cinza)
+- Outros → Principal (azul)
+
+```
+0: Time
+1: Nome
+2: Nacionalidades
+3: Idade
+4-6: Pés/Altura
+7-14: Físicos
+15-27: Mentais
+28-37: Técnicos
+38-47: Goleiro
+48-51: Salário/Contrato
+52-65: Posições
+```
+Time
+Nome
+Nacionalidades
+Idade
+Pé Esquerdo
+Pé Direito
+Altura
+Aceleração
+Agilidade
+Equilíbrio
+Pulo
+Cond. Física Natural
+Velocidade
+Resistência
+Força
+Agressão
+Antecipação
+Bravura
+Frieza
+Concentração
+Decisões
+Determinação
+Talento
+Sem a Bola
+Posicionamento
+Trabalho em Equipe
+Visão
+Índice de Trabalho
+Cruzamento
+Drible
+Finalização
+Toque de Primeira
+Cabeçada
+Chutes de Longe
+Marcação
+Passe
+Desarme
+Técnica
+Habilidade Aérea
+Comando de Área
+Comunicação
+Excentricidade
+Jogo de Mãos
+Pontapé
+Um para Um
+Reflexos
+Saídas
+Lançamentos
+Salário
+Data Expira
+Situação de Transferência
+Preço Exigido
+Meia-Atacante Central
+Meia-Atacante Esquerdo
+Meia-Atacante Direito
+Zagueiro
+Lateral Esquerdo
+Lateral Direita
+Volante
+Goleiro
+Meio-Campo
+Meia-Esquerda
+Meia-Direita
+Ponta-de-lança
+Ala Esquerda
+Ala Direita

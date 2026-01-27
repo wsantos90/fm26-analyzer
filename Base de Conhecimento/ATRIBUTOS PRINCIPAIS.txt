@@ -1,0 +1,113 @@
+ATRIBUTOS PRINCIPAIS
+
+GERAL Aceleração Ritmo Driblagem Resistência Antecipação Salto Equilíbrio Taxa de Trabalho Determinação Posição
+
+OCULTO Partidas importantes, consistência
+
+GK Agility Reflexes Aéreo
+
+DRL Concentração, Ritmo, Salto, Aceleração, Antecipação, Driblagem, Resistência
+
+Concentração DC Aceleração Velocidade de Trabalho Antecipação
+
+WBRL Concentração, Velocidade, Aceleração, Salto, Compostura, Visão
+
+DM Aceleração Antecipação Estamina Pular Compostura Passar
+
+Velocidade MRL Aceleração Técnica de Drible Saltos Concentração de Visão
+
+MC Antecipação Aceleração Compostura Ritmo Drible Pulos
+
+AMRL Aceleração do Ritmo Antecipação Cruzamento Driblagem Técnica de Salto Compostura
+
+Técnica de Concentração de Concentração por Aceleração do Ritmo AMC
+
+ST Aceleração Aceleração Concentração Driblagem Visão Equilíbrio OTB Finalização
+
+ATUALIZAÇÃO de ATRIBUTO crédito nome de usuário inadequado.
+
+Resumo
+Ritmo e Aceleração,
+continua sendo o atributo mais importante. No entanto, devido ao aprimoramento de outros atributos, sua dominância não é tão absoluta quanto a do fm24
+
+Finalização, Tiros Longos, Agilidade.
+Foi significativamente aprimorado (em comparação ao fm24). O "acabamento" foi aproximadamente multiplicado por duas vezes. "Long Shots" foi aumentado aproximadamente 3 vezes.
+
+Ritmo de Trabalho é
+muito semelhante às características do FM24. O período de 1 a 12 tem um impacto muito significativo. Pode-se inferir que deve ter mais de 6 pontos; caso contrário, isso prejudicará muito o desempenho da equipe. No fm26, sua importância diminuiu ligeiramente.
+
+Alcance
+de Salto Comparado ao fm24, ele foi ligeiramente melhorado
+
+Concentração e Compostura
+Comparado ao fm24, a "Compostura" foi aproximadamente multiplicada por 2 vezes.
+Concentração, sua importância também foi levemente aumentada
+
+Resistência, Força
+Diminuição da Importância
+Força Aumento de Importância
+
+Agressividade Determinação
+Aumento de importância
+
+
+Se eu fosse dar uma classificação de importância:
+1. Ritmo, Aceleração
+2.Work Velocidade, Alcance de salto, Agilidade
+3. Finalização, drible, concentração
+4. Antecipação, compostura, chutes longos, determinação
+5. Equilíbrio, força, resistência, agressividade
+Todos os outros atributos podem ser
+ignorados
+8. Proficiência
+em posição FM26 adicionou uma tática em duas etapas: "com a bola e sem a bola"
+
+
+Isso indica que, se os jogadores quiserem jogar em formações diferentes nas duas fases, seus jogadores precisam ter toda a proficiência nas posições correspondentes
+
+O cínico não importa muito, mas a nitidez do jogo é crucial. Está entre as escolhas de tática e ritmo/acção em termos de efeito no desempenho. Então, não subestime a 'condição natural', não abuse do descanso nos treinos e certifique-se de que seus jogadores estejam 100% em forma durante partidas com reservas ou amistosos antes de jogar.
+
+Capitão - O goleiro deve ser capitão ou vice-capitão. Seus prodígios terão baixa liderança e idade/reputação, porteiros prodígios são menos prováveis, e o goleiro é o único jogador que pode ficar lá 90 minutos a cada partida. Alta liderança é rara para todas as posições, mas faz diferença mínima no desempenho, então se você escolher, por exemplo, capitão ST, provavelmente está sacrificando o desempenho ST por isso. DM, ou em menor grau, DC, é uma boa opção de dupla capitão/vice.
+
+Exploit de posição dupla - treine a segunda posição até '12' por custo zero de CA, ou seja, ST20/DM12 com estatísticas de ST. Um subreddit útil para emergências, mas 5% < uso. DM20/ST12 com estatísticas de ST para conseguir 130 CA em vez de 150 CA NÃO FUNCIONA, nem mesmo com min-max. Ele se tornará ST quando você atingir o cargo 131 de CA ST. Você passou dos limites quando mostra 'DM/ST' em vez de 'DM'. Só faça com DM20/ST8 existente, ou DM20/ST1 com versatilidade 15+, devido ao custo de oportunidade de treinamento. Não faça ST+DC/DL/DR (+8 CA) nem 3 posições (+3 CA), mas até ~10-12 de proficiência está ok.
+
+Exploit de recuperação de TREINAMENTO
+- Vá para treinamentos > cronogramas > novo cronograma > criar um novo cronograma > preencha com 7 sessões de recuperação, depois mude um dia vazio para 'match' em 'match day' que aparece como opção. Agora você pode usar mais de 7 sessões de recuperação. Preencha com sessões de recuperação. Salve o cronograma e aplique no seu calendário de treinos.
+
+Exploit de descanso - Dia inteiro de descanso (3 períodos) + 'Sem trabalho de campo ou academia' para as primeiras 3 opções de condição no treino > descanso. Dá efeito de descanso potencializado.
+
+Exploit de assistente de gerente - Configure seu calendário de treinamentos para a temporada e depois delegue o 'treinamento geral' para um membro da equipe. Chega de reclamações de infelicidade no treinamento.
+
+EU
+
+Antes do início da partida, o jogo calcula a pontuação com base em uma variedade de fatores
+
+Esse deve ser o resultado instantâneo ou o resultado das férias.
+
+Ao tocar
+
+Cada vez que você faz uma mudança, como uma substituição ou uma mudança tática, o jogo recalcula o placar... Por exemplo... Se você fizer um ajuste tático no minuto 20, isso significa que o jogo vai recalcular o placar daquele momento até o minuto 45, e depois do minuto 45 ao minuto 90, e isso acontece com cada substituto e assim por diante
+
+AJUSTES NO JOGO FORA DE CASA -
+
+Mentalidade Defensiva/Equilibrada
+
+A LOE pode ser ajustada para MID BLOCK
+
+TÁTICA DE CONTROLE
+
+Remova o Contra-Pressa e/ou o Contra-Ferro
+
+Para um SUS, essas são ideias para usar.
+
+Remover contador de pressão
+
+Mude mentalidade, cauteloso/defensivo
+
+SUS completo seria se reagrupar e manter a forma
+
+Ajuste os SPs para que mais jogadores fiquem para trás
+
+Eu costumo julgar o que usar pelo progresso do jogo, pois talvez você queira controlar o jogo em vez de um SUS completo
+
+Attribute_Weights.pdf.pdf35,17 kB · 59 downloads35,17 kB · 13.391 downloads

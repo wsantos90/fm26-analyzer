@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import Papa from 'papaparse';
 import { Player, CSVValidationResult } from '../types';
+import { FM26_ROLES } from '../constants';
 
 export const usePlayerData = () => {
   const [players, setPlayers] = useState<Player[]>([]);
@@ -91,63 +92,118 @@ export const usePlayerData = () => {
           return null;
         }
 
-        // Mapeamento básico baseado no exemplo fornecido
-        // 0: Team, 1: Name, 2: Nationality, 3: Age, depois vários atributos
+        // Mapeamento baseado no documento Mapeamento Importação.txt
         const team = data[0] || 'Unknown';
         const name = data[1] || 'Unknown Player';
         const nationality = data[2] || 'Unknown';
         const age = parseInt(data[3]) || 25;
 
-        // Atributos básicos (posicionados aproximadamente baseado no exemplo)
+        // Atributos Físicos (7-14)
         const attributes = {
-          pace: parseInt(data[8]) || 10,
-          acceleration: parseInt(data[9]) || 10,
-          stamina: parseInt(data[10]) || 10,
-          strength: parseInt(data[11]) || 10,
-          balance: parseInt(data[12]) || 10,
-          agility: parseInt(data[13]) || 10,
-          jumping: parseInt(data[14]) || 10,
-          naturalFitness: parseInt(data[15]) || 10,
-          workRate: parseInt(data[16]) || 10,
-          teamwork: parseInt(data[17]) || 10,
-          aggression: parseInt(data[18]) || 10,
-          bravery: parseInt(data[19]) || 10,
-          decisions: parseInt(data[20]) || 10,
-          composure: parseInt(data[21]) || 10,
-          concentration: parseInt(data[22]) || 10,
-          anticipation: parseInt(data[23]) || 10,
-          vision: parseInt(data[24]) || 10,
-          flair: parseInt(data[25]) || 10,
-          determination: parseInt(data[26]) || 10,
-          offTheBall: parseInt(data[27]) || 10,
-          passing: parseInt(data[28]) || 10,
-          crossing: parseInt(data[29]) || 10,
-          dribbling: parseInt(data[30]) || 10,
-          firstTouch: parseInt(data[31]) || 10,
-          finishing: parseInt(data[32]) || 10,
-          heading: parseInt(data[33]) || 10,
-          longShots: parseInt(data[34]) || 10,
-          technique: parseInt(data[35]) || 10,
-          tackling: parseInt(data[36]) || 10,
-          marking: parseInt(data[37]) || 10,
-          positioning: parseInt(data[38]) || 10,
-          reflexes: parseInt(data[39]) || 10,
-          handling: parseInt(data[40]) || 10,
-          command: parseInt(data[41]) || 10,
-          aerial: parseInt(data[42]) || 10,
-          oneOnOne: parseInt(data[43]) || 10,
-          kicking: parseInt(data[44]) || 10,
-          rushing: parseInt(data[45]) || 10,
-          eccentricity: parseInt(data[46]) || 10,
-          communication: parseInt(data[47]) || 10,
-          throwing: parseInt(data[48]) || 10,
+          acceleration: parseInt(data[7]) || 1,
+          agility: parseInt(data[8]) || 1,
+          balance: parseInt(data[9]) || 1,
+          jumping: parseInt(data[10]) || 1,
+          naturalFitness: parseInt(data[11]) || 1,
+          pace: parseInt(data[12]) || 1,
+          stamina: parseInt(data[13]) || 1,
+          strength: parseInt(data[14]) || 1,
+
+          // Atributos Mentais (15-27)
+          aggression: parseInt(data[15]) || 1,
+          anticipation: parseInt(data[16]) || 1,
+          bravery: parseInt(data[17]) || 1,
+          composure: parseInt(data[18]) || 1,
+          concentration: parseInt(data[19]) || 1,
+          decisions: parseInt(data[20]) || 1,
+          determination: parseInt(data[21]) || 1,
+          flair: parseInt(data[22]) || 1,
+          offTheBall: parseInt(data[23]) || 1,
+          positioning: parseInt(data[24]) || 1,
+          teamwork: parseInt(data[25]) || 1,
+          vision: parseInt(data[26]) || 1,
+          workRate: parseInt(data[27]) || 1,
+
+          // Atributos Técnicos (28-37)
+          crossing: parseInt(data[28]) || 1,
+          dribbling: parseInt(data[29]) || 1,
+          finishing: parseInt(data[30]) || 1,
+          firstTouch: parseInt(data[31]) || 1,
+          heading: parseInt(data[32]) || 1,
+          longShots: parseInt(data[33]) || 1,
+          marking: parseInt(data[34]) || 1,
+          passing: parseInt(data[35]) || 1,
+          tackling: parseInt(data[36]) || 1,
+          technique: parseInt(data[37]) || 1,
+
+          // Atributos de Goleiro (38-47)
+          aerial: parseInt(data[38]) || 1,
+          command: parseInt(data[39]) || 1,
+          communication: parseInt(data[40]) || 1,
+          eccentricity: parseInt(data[41]) || 1,
+          handling: parseInt(data[42]) || 1, // Jogo de Mãos maps to Handling usually? Or Throwing? Standard mapping: Handling.
+          kicking: parseInt(data[43]) || 1,
+          oneOnOne: parseInt(data[44]) || 1,
+          reflexes: parseInt(data[45]) || 1,
+          rushing: parseInt(data[46]) || 1, // Saídas maps to Rushing Out
+          throwing: parseInt(data[47]) || 1, // Lançamentos maps to Throwing
         };
 
         const scores = calculatePlayerScores(attributes);
+        const fm26Scores = calculateFM26Scores(attributes);
+
+        const maxIp = Math.max(0, ...Object.values(fm26Scores.ip));
+        const maxOop = Math.max(0, ...Object.values(fm26Scores.oop));
+        const maxGk = Math.max(0, ...Object.values(fm26Scores.gk));
+        const mainScore = Math.max(maxIp, maxOop, maxGk);
+
         const category = determinePlayerCategory(
-          scores,
+          { score: mainScore },
           age
         ) as Player['category'];
+
+        // Parse positions from columns 52-65
+        const positionMap: { [key: number]: string } = {
+          52: 'MAC', // AMC -> Meia Atacante Central
+          53: 'MAE', // AML -> Meia Atacante Esquerdo
+          54: 'MAD', // AMR -> Meia Atacante Direito
+          55: 'ZAG', // DC -> Zagueiro
+          56: 'LE', // DL -> Lateral Esquerdo
+          57: 'LD', // DR -> Lateral Direito
+          58: 'VOL', // DMC -> Volante
+          59: 'GOL', // GK -> Goleiro
+          60: 'MEI', // MC -> Meia Central
+          61: 'ME', // ML -> Meia Esquerda
+          62: 'MD', // MR -> Meia Direita
+          63: 'ATA', // ST -> Atacante
+          64: 'ALE', // WBL -> Ala Esquerdo
+          65: 'ALD', // WBR -> Ala Direito
+        };
+
+        const primaryPositions: string[] = [];
+        const secondaryPositions: string[] = [];
+
+        Object.entries(positionMap).forEach(([index, posCode]) => {
+          const rating = parseInt(data[parseInt(index)]) || 0;
+          if (rating >= 15) {
+            primaryPositions.push(posCode);
+          } else if (rating >= 10) {
+            secondaryPositions.push(posCode);
+          }
+        });
+
+        // Fallback if no positions found
+        if (primaryPositions.length === 0 && secondaryPositions.length === 0) {
+          primaryPositions.push('ATA'); // Default
+        } else if (
+          primaryPositions.length === 0 &&
+          secondaryPositions.length > 0
+        ) {
+          // Promote best secondary to primary if no primary exists
+          // For simplicity, just take the first secondary
+          const bestSec = secondaryPositions.shift();
+          if (bestSec) primaryPositions.push(bestSec);
+        }
 
         return {
           id: `player-${index}-${Date.now()}`,
@@ -157,13 +213,13 @@ export const usePlayerData = () => {
           age,
           nat: nationality,
           positions: {
-            primary: ['ST'], // Posição padrão
-            secondary: [],
+            primary: primaryPositions,
+            secondary: secondaryPositions,
           },
           attributes,
           scores,
-          fm26Scores: calculateFM26Scores(attributes),
-          mainScore: Math.max(...Object.values(scores)),
+          fm26Scores,
+          mainScore,
           category,
           bestRole: determineBestRole(attributes, scores),
           bestIPRole: determineBestIPRole(attributes),
@@ -265,8 +321,15 @@ export const usePlayerData = () => {
       };
 
       const scores = calculatePlayerScores(attributes);
+      const fm26Scores = calculateFM26Scores(attributes);
+
+      const maxIp = Math.max(0, ...Object.values(fm26Scores.ip));
+      const maxOop = Math.max(0, ...Object.values(fm26Scores.oop));
+      const maxGk = Math.max(0, ...Object.values(fm26Scores.gk));
+      const mainScore = Math.max(maxIp, maxOop, maxGk);
+
       const category = determinePlayerCategory(
-        scores,
+        { score: mainScore },
         parseInt(getValue('age', 'Age', 'AGE')) || 25
       ) as Player['category'];
 
@@ -303,8 +366,8 @@ export const usePlayerData = () => {
         },
         attributes,
         scores,
-        fm26Scores: calculateFM26Scores(attributes),
-        mainScore: Math.max(...Object.values(scores)),
+        fm26Scores,
+        mainScore,
         category,
         bestRole: determineBestRole(attributes, scores),
         bestIPRole: determineBestIPRole(attributes),
@@ -366,108 +429,97 @@ export const usePlayerData = () => {
   const determineTeamType = (
     team: string
   ): 'main' | 'youth' | 'reserve' | 'loan' => {
-    const teamLower = team.toLowerCase();
+    if (!team) return 'main';
+    const teamUpper = team.toUpperCase();
+
+    // Regra 1: S19, S20, etc. ou variações de Sub/Youth -> youth
     if (
-      teamLower.includes('sub') ||
-      teamLower.includes('u19') ||
-      teamLower.includes('u20')
+      /S(1[8-9]|2[0-3])/.test(teamUpper) || // S18, S19, S20, S21, S22, S23
+      teamUpper.includes('SUB') ||
+      teamUpper.includes('U19') ||
+      teamUpper.includes('U20') ||
+      teamUpper.includes('U21') ||
+      teamUpper.includes('U23') ||
+      teamUpper.includes('YOUTH') ||
+      teamUpper.includes('JUNIORES')
     ) {
       return 'youth';
     }
-    if (teamLower.includes('b') || teamLower.includes('reserve')) {
-      return 'reserve';
-    }
-    if (teamLower.includes('loan') || teamLower.includes('emprest')) {
+
+    // Regra 2: Contém EMP ou LOAN -> loan
+    if (teamUpper.includes('EMP') || teamUpper.includes('LOAN')) {
       return 'loan';
     }
+
+    // Regra 3: Termina com " B", " II", " 2" ou contém "RESERVA"
+    // Atenção: O espaço antes do número é crucial para não pegar "Schalke 04"
+    if (
+      teamUpper.includes('RESERVA') ||
+      teamUpper.includes('RESERVE') ||
+      teamUpper.endsWith(' B') ||
+      teamUpper.endsWith(' II') ||
+      teamUpper.endsWith(' 2') // Adicionado para capturar "Schalke 04 2"
+    ) {
+      return 'reserve';
+    }
+
+    // Regra 4: Outros -> main
     return 'main';
   };
 
   const calculateFM26Scores = (attributes: any) => {
-    return {
-      ip: {
-        GK: attributes.reflexes * 0.8 + attributes.handling * 0.2,
-        DC:
-          attributes.tackling * 0.4 +
-          attributes.marking * 0.3 +
-          attributes.heading * 0.3,
-        DL:
-          attributes.tackling * 0.3 +
-          attributes.pace * 0.4 +
-          attributes.crossing * 0.3,
-        DR:
-          attributes.tackling * 0.3 +
-          attributes.pace * 0.4 +
-          attributes.crossing * 0.3,
-        DMC:
-          attributes.tackling * 0.4 +
-          attributes.passing * 0.3 +
-          attributes.positioning * 0.3,
-        MC:
-          attributes.passing * 0.3 +
-          attributes.vision * 0.3 +
-          attributes.stamina * 0.4,
-        ML:
-          attributes.crossing * 0.3 +
-          attributes.dribbling * 0.4 +
-          attributes.pace * 0.3,
-        MR:
-          attributes.crossing * 0.3 +
-          attributes.dribbling * 0.4 +
-          attributes.pace * 0.3,
-        AML:
-          attributes.dribbling * 0.4 +
-          attributes.finishing * 0.3 +
-          attributes.pace * 0.3,
-        AMR:
-          attributes.dribbling * 0.4 +
-          attributes.finishing * 0.3 +
-          attributes.pace * 0.3,
-        AMC:
-          attributes.passing * 0.3 +
-          attributes.vision * 0.4 +
-          attributes.technique * 0.3,
-        ST:
-          attributes.finishing * 0.4 +
-          attributes.anticipation * 0.3 +
-          attributes.pace * 0.3,
-      },
-      oop: {
-        GK: attributes.reflexes * 0.7 + attributes.command * 0.3,
-        DC: attributes.tackling * 0.5 + attributes.strength * 0.5,
-        DL:
-          attributes.tackling * 0.4 +
-          attributes.stamina * 0.3 +
-          attributes.crossing * 0.3,
-        DR:
-          attributes.tackling * 0.4 +
-          attributes.stamina * 0.3 +
-          attributes.crossing * 0.3,
-        DMC: attributes.tackling * 0.5 + attributes.workRate * 0.5,
-        MC:
-          attributes.passing * 0.4 +
-          attributes.workRate * 0.3 +
-          attributes.technique * 0.3,
-        ML:
-          attributes.dribbling * 0.4 +
-          attributes.technique * 0.3 +
-          attributes.crossing * 0.3,
-        MR:
-          attributes.dribbling * 0.4 +
-          attributes.technique * 0.3 +
-          attributes.crossing * 0.3,
-        AML: attributes.dribbling * 0.5 + attributes.finishing * 0.5,
-        AMR: attributes.dribbling * 0.5 + attributes.finishing * 0.5,
-        AMC:
-          attributes.vision * 0.4 +
-          attributes.passing * 0.3 +
-          attributes.technique * 0.3,
-        ST:
-          attributes.finishing * 0.5 +
-          attributes.strength * 0.3 +
-          attributes.anticipation * 0.2,
-      },
+    const scores: {
+      ip: Record<string, number>;
+      oop: Record<string, number>;
+      gk: Record<string, number>;
+    } = {
+      ip: {},
+      oop: {},
+      gk: {},
     };
+
+    // Calculate GK scores
+    if (FM26_ROLES.gk) {
+      Object.entries(FM26_ROLES.gk).forEach(([role, weights]) => {
+        let score = 0;
+        let weightSum = 0;
+        Object.entries(weights).forEach(([attr, weight]) => {
+          // @ts-ignore
+          const attrValue = attributes[attr] || 0;
+          score += attrValue * weight;
+          weightSum += weight;
+        });
+        scores.gk[role] = weightSum > 0 ? score / weightSum : 0;
+      });
+    }
+
+    // Calculate IP scores
+    Object.entries(FM26_ROLES.ip).forEach(([role, weights]) => {
+      let score = 0;
+      let weightSum = 0;
+      Object.entries(weights).forEach(([attr, weight]) => {
+        // @ts-ignore
+        const attrValue = attributes[attr] || 0;
+        score += attrValue * weight;
+        weightSum += weight;
+      });
+      scores.ip[role] = weightSum > 0 ? score / weightSum : 0;
+    });
+
+    // Calculate OOP scores
+    Object.entries(FM26_ROLES.oop).forEach(([role, weights]) => {
+      let score = 0;
+      let weightSum = 0;
+      Object.entries(weights).forEach(([attr, weight]) => {
+        // @ts-ignore
+        const attrValue = attributes[attr] || 0;
+        score += attrValue * weight;
+        weightSum += weight;
+      });
+      scores.oop[role] = weightSum > 0 ? score / weightSum : 0;
+    });
+
+    return scores;
   };
 
   const determineBestRole = (attributes: any, scores: any) => {
@@ -492,11 +544,33 @@ export const usePlayerData = () => {
   };
 
   const determineBestIPRole = (attributes: any) => {
-    return determineBestRole(attributes, {});
+    const scores = calculateFM26Scores(attributes);
+    let bestRole = '';
+    let bestScore = -1;
+
+    Object.entries(scores.ip).forEach(([role, score]) => {
+      if (score > bestScore) {
+        bestScore = score;
+        bestRole = role;
+      }
+    });
+
+    return bestRole;
   };
 
   const determineBestOOPRole = (attributes: any) => {
-    return determineBestRole(attributes, {});
+    const scores = calculateFM26Scores(attributes);
+    let bestRole = '';
+    let bestScore = -1;
+
+    Object.entries(scores.oop).forEach(([role, score]) => {
+      if (score > bestScore) {
+        bestScore = score;
+        bestRole = role;
+      }
+    });
+
+    return bestRole;
   };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -556,10 +630,6 @@ export const usePlayerData = () => {
     });
   };
 
-  const filteredPlayers = useMemo(() => {
-    return players;
-  }, [players]);
-
   const statistics = useMemo(() => {
     if (players.length === 0) {
       return {
@@ -604,11 +674,11 @@ export const usePlayerData = () => {
 
   return {
     players,
-    filteredPlayers,
     statistics,
     isLoading,
     error,
     handleFileUpload,
     setPlayers,
+    resetData: () => setPlayers([]),
   };
 };

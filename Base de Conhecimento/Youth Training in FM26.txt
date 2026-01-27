@@ -1,0 +1,64 @@
+Youth Training in FM26
+Estabelecendo alguns princípios gerais
+A forma como você aborda o desenvolvimento de base vai variar dependendo do clube que você comanda, da liga em que está e da qualidade do time para o nível. Cada etapa da evolução de um clube exige algo um pouco diferente do seu sistema de base.
+
+Por exemplo, se você está treinando nas ligas inferiores, frequentemente vai buscar no seu time de base para dar profundidade ao seu elenco principal. Atributos físicos importam mais aqui — eles precisarão de força, resistência e velocidade para conseguir atender às exigências do futebol de divisões inferiores e ao volume de jogos que vão jogar.
+
+É importante estabelecer alguns princípios gerais para desenvolver seus filhos. Isso significa pensar se você foca na habilidade física ou técnica, qual porcentagem de minutos quer que seus prospectos de base joguem, em quais copas/jogos da liga eles terão oportunidades e como você toma decisões sobre quem vai receber empréstimos e transferências permanentes.
+
+
+Estrutura Juvenil do Man City
+Desenvolvimento Técnico e Físico
+O desenvolvimento dos jogadores acontece em etapas. O tempo de jogo e o treinamento geral levam a maioria dos jogadores a evoluir seus Atributos Físicos e Técnicos, com os Atributos Mentais geralmente melhorando mais à medida que envelhecem.
+
+Pela experiência deste autor, suas decisões sobre priorizar o desenvolvimento técnico ou físico devem ser baseadas na idade, posição e nível de experiência deles.
+
+
+Perfil de Newgen no Man City
+De modo geral, quando um jogador tem entre 15 e 17 anos, você deve priorizar seu desenvolvimento físico. Isso pode ser feito com o foco individual em seus Atributos Físicos e trabalho em sua posição – como defensor, meio-campista ou atacante – em vez de um papel específico.
+
+Então, a menos que sejam uma estrela óbvia, entre 18 e 21 anos você deve focar em completar algumas deficiências técnicas e prepará-los para o papel no elenco. O treinamento deve evoluir para o foco em Atributos Técnicos nesta fase, com um papel preferido atribuído de acordo com o perfil deles se formando e onde você quer que eles se encaixem. É também nessa fase que você deve considerar as mudanças de empréstimo em um nível adequado.
+
+
+Perfil do Jogador Heskey
+A partir do 21, o jogador deve lutar por uma vaga no time principal ou ser um candidato para você vender no mercado de transferências. Em termos de treinamento deles neste ponto, você deve alternar seus focos entre Atributos Mentais e Técnicos e também começar a pensar em incorporar Traços que você quer que eles adotem no jogo.
+
+
+Nico O'Reilly 
+To set up individual focuses on FM26, first head to Squad and Youth Setup, then pick the youth player you want to set up training for. You’ll find the training tab at the bottom of their player profile. This will take you into the familiar individual training screen and from there, you can set up not only this individual player's training, but also the rest of the youth squad.
+
+This year, individual training looks a little different. Because there are in and out of possession roles, you can set up focuses for both phases of play, as well as an additional focus.
+
+In the example below, I've got a player who I want to play as a Defensive Midfielder in possession, but a Full-Back out of possession:
+
+
+Training
+You will see that from this one screen, you can also swap the players' training units, see their progress, and tweak their individual focuses. This player is under 18, so the focus should be more on physical development; the IP and OOP focuses will hit a lot of the key Technical Attributes he needs to develop, so working on Agility and Balance will bring more benefit than 'double training' the Technical Attributes.
+
+Many youth players don’t develop their physical attributes evenly. Some stats climb quickly, others hardly move.
+
+That’s why it’s worth checking their training plans every few months and tweaking their individual focuses. These small adjustments help keep their physical development balanced.
+
+Building a Development Pipeline
+Training your players is only one aspect of their development – you need to have a pipeline and plan in place for them to move from your Under-18s through to your first-team squad.
+
+You can’t get a full scope of a player’s potential at Under-18 level, so at this stage it makes sense to keep a broad, deep squad as long as you’ve got the coaching staff to handle the workload. Give them focused individual training to work on their physical development and aspects of their general position (defence, midfield, attack). When they hit 18, take stock of how they've developed and what their potential next step is.
+
+
+U18s
+When a player reaches 18, gametime starts to become more important. If they're at an appropriate level, you can start to think about loaning them out to clubs playing in competitive leagues. The key is to find clubs and divisions where they'll receive quality game time and will perform well; minutes and rating are both important at this stage. There are a few ways to achieve this, including via affiliate clubs in different leagues. The new Opportunities feature introduced from TransferRoom is another great way to source a suitable move.
+
+There will be youngsters that you struggle to find good moves for. For some, this will be because they're simply not good enough. For others, the challenge isn’t quality but timing; even good players can struggle to find a loan when clubs don’t need their position. In this situation, you need to ensure they’re getting regular minutes for your Under-21 side or put them in your first-team squad for rotation and cup minutes wherever possible. For most 'big' clubs, your youth teams will be playing semi-regularly, and especially continental youth tournaments still boast a good range of valuable minutes for youngsters.
+
+The key here is not to have too many players left at the club, so that those in your Under-21s get a good share of minutes, with your most promising taking rotation minutes in your first team where possible.
+
+
+U21s
+By the time a player reaches 21, you should have a relatively clear idea of whether they have a future at your club. The Squad Planner is a great resource for this - you can pull players into your squad planner from the youth system, to see where they fit in your squad in terms of ability and position. If you can give them minutes, then that is the perfect outcome, and they can start to form part of your first team squad.
+
+However, at 21, a lot of youngsters hold a lot of value, often beyond their actual ability, so this can also be a good time to sell them on and reinvest that money in more youngsters to run through the pipeline.
+
+
+1st Team
+The most important thing is to try to develop a system which means you're never blocking or stagnating a player's progress during their time with your club. A well-run youth system is key to developing, sustaining and achieving success on Football Manager.
+

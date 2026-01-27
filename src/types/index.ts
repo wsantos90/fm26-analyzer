@@ -69,6 +69,7 @@ export interface Player {
   fm26Scores: {
     ip: Record<string, number>;
     oop: Record<string, number>;
+    gk: Record<string, number>;
   };
   mainScore: number;
   category:
