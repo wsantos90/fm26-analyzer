@@ -2,11 +2,57 @@ import { useState, useMemo } from 'react';
 import Papa from 'papaparse';
 import { Player, CSVValidationResult } from '../types';
 import { FM26_ROLES } from '../constants';
+import {
+  calculatePositionScore,
+  SUPPORTED_POSITIONS,
+} from '../utils/positionAnalysis';
 
 export const usePlayerData = () => {
   const [players, setPlayers] = useState<Player[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Mapping from Analysis (English) keys to CSV (Portuguese) codes
+  const ENGLISH_TO_PT_CODE: Record<string, string> = {
+    GK: 'GOL',
+    DC: 'ZAG',
+    DL: 'LE',
+    DR: 'LD',
+    WBL: 'ALE',
+    WBR: 'ALD',
+    DM: 'VOL',
+    MC: 'MEI',
+    ML: 'ME',
+    MR: 'MD',
+    AML: 'MAE',
+    AMR: 'MAD',
+    AMC: 'MAC',
+    ST: 'ATA',
+  };
+
+  const augmentPositionsWithAnalysis = (
+    attributes: any,
+    primary: string[],
+    secondary: string[]
+  ) => {
+    const scores = SUPPORTED_POSITIONS.map(pos => ({
+      position: pos,
+      score: calculatePositionScore(attributes, pos),
+    }));
+
+    // Get top 3 positions with score >= 10 (minimum threshold for relevance)
+    const bestPositions = scores
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3)
+      .filter(p => p.score >= 10);
+
+    bestPositions.forEach(p => {
+      const ptCode = ENGLISH_TO_PT_CODE[p.position];
+      if (ptCode && !primary.includes(ptCode) && !secondary.includes(ptCode)) {
+        secondary.push(ptCode);
+      }
+    });
+  };
 
   const validateCSVData = (data: any[]): CSVValidationResult => {
     const errors: string[] = [];
@@ -152,10 +198,17 @@ export const usePlayerData = () => {
         const scores = calculatePlayerScores(attributes);
         const fm26Scores = calculateFM26Scores(attributes);
 
-        const maxIp = Math.max(0, ...Object.values(fm26Scores.ip));
-        const maxOop = Math.max(0, ...Object.values(fm26Scores.oop));
-        const maxGk = Math.max(0, ...Object.values(fm26Scores.gk));
-        const mainScore = Math.max(maxIp, maxOop, maxGk);
+        let maxScore = 0;
+        let bestPos = '';
+        SUPPORTED_POSITIONS.forEach(pos => {
+          const score = calculatePositionScore(attributes, pos);
+          if (score > maxScore) {
+            maxScore = score;
+            bestPos = pos;
+          }
+        });
+        const mainScore = maxScore;
+        const bestPosition = bestPos;
 
         const category = determinePlayerCategory(
           { score: mainScore },
@@ -205,6 +258,13 @@ export const usePlayerData = () => {
           if (bestSec) primaryPositions.push(bestSec);
         }
 
+        // Augment positions with analysis based on attributes
+        augmentPositionsWithAnalysis(
+          attributes,
+          primaryPositions,
+          secondaryPositions
+        );
+
         return {
           id: `player-${index}-${Date.now()}`,
           team,
@@ -221,6 +281,7 @@ export const usePlayerData = () => {
           fm26Scores,
           mainScore,
           category,
+          bestPosition,
           bestRole: determineBestRole(attributes, scores),
           bestIPRole: determineBestIPRole(attributes),
           bestOOPRole: determineBestOOPRole(attributes),
@@ -323,10 +384,17 @@ export const usePlayerData = () => {
       const scores = calculatePlayerScores(attributes);
       const fm26Scores = calculateFM26Scores(attributes);
 
-      const maxIp = Math.max(0, ...Object.values(fm26Scores.ip));
-      const maxOop = Math.max(0, ...Object.values(fm26Scores.oop));
-      const maxGk = Math.max(0, ...Object.values(fm26Scores.gk));
-      const mainScore = Math.max(maxIp, maxOop, maxGk);
+      let maxScore = 0;
+      let bestPos = '';
+      SUPPORTED_POSITIONS.forEach(pos => {
+        const score = calculatePositionScore(attributes, pos);
+        if (score > maxScore) {
+          maxScore = score;
+          bestPos = pos;
+        }
+      });
+      const mainScore = maxScore;
+      const bestPosition = bestPos;
 
       const category = determinePlayerCategory(
         { score: mainScore },
@@ -347,6 +415,23 @@ export const usePlayerData = () => {
           'SECONDARY_POSITIONS'
         ) || '';
 
+      const primaryPositions = primaryPositionsStr
+        .split(',')
+        .map((p: string) => p.trim())
+        .filter((p: string) => p);
+
+      const secondaryPositions = secondaryPositionsStr
+        .split(',')
+        .map((p: string) => p.trim())
+        .filter((p: string) => p);
+
+      // Augment with analysis
+      augmentPositionsWithAnalysis(
+        attributes,
+        primaryPositions,
+        secondaryPositions
+      );
+
       return {
         id: `player-${index}-${Date.now()}`,
         team: getValue('team', 'Team', 'TIME') || 'Unknown',
@@ -355,20 +440,15 @@ export const usePlayerData = () => {
         age: parseInt(getValue('age', 'Age', 'AGE')) || 25,
         nat: getValue('nat', 'Nationality', 'NAT') || 'Unknown',
         positions: {
-          primary: primaryPositionsStr
-            .split(',')
-            .map((p: string) => p.trim())
-            .filter((p: string) => p),
-          secondary: secondaryPositionsStr
-            .split(',')
-            .map((p: string) => p.trim())
-            .filter((p: string) => p),
+          primary: primaryPositions,
+          secondary: secondaryPositions,
         },
         attributes,
         scores,
         fm26Scores,
         mainScore,
         category,
+        bestPosition,
         bestRole: determineBestRole(attributes, scores),
         bestIPRole: determineBestIPRole(attributes),
         bestOOPRole: determineBestOOPRole(attributes),

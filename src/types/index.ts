@@ -79,6 +79,7 @@ export interface Player {
     | 'promessa'
     | 'vender'
     | 'baixo_nivel';
+  bestPosition: string;
   bestRole: string;
   bestIPRole: string;
   bestOOPRole: string;

@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { Player } from '../types';
+import { POS_LABELS } from '../constants';
 import {
   Trophy,
   TrendingUp,
@@ -108,7 +109,10 @@ const ClubStructure: React.FC<ClubStructureProps> = ({
             </div>
             <div className="flex items-center gap-2">
               <span className="text-xs text-slate-500 uppercase font-semibold">
-                {player.positions.primary[0]}
+                {player.bestPosition
+                  ? POS_LABELS[player.bestPosition.toLowerCase()] ||
+                    player.bestPosition
+                  : player.positions.primary[0]}
               </span>
               <span
                 className={`text-[10px] px-1.5 rounded border ${getCategoryColor(

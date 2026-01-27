@@ -1,18 +1,18 @@
 export const POS_LABELS: Record<string, string> = {
-  gk: 'GR',
-  dc: 'ZC',
-  dl: 'DE',
-  dr: 'DD',
-  wbl: 'AE',
-  wbr: 'AD',
+  gk: 'GOL',
+  dc: 'ZAG',
+  dl: 'LE',
+  dr: 'LD',
+  wbl: 'ALE',
+  wbr: 'ALD',
   dmc: 'VOL',
-  mc: 'MC',
+  mc: 'MEI',
   ml: 'ME',
   mr: 'MD',
   amc: 'MAC',
   aml: 'MAE',
   amr: 'MAD',
-  st: 'PL',
+  st: 'ATA',
 };
 
 // FM26 ROLE DEFINITIONS (Pesos de Atributos)
