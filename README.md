@@ -134,7 +134,9 @@ Se você não estiver satisfeito com as configurações de build, pode executar 
 
 ## 📊 Mapeamento CSV
 
-⚠️ **IMPORTANTE**: A coluna "Time" deve ser a PRIMEIRA coluna.
+⚠️ **IMPORTANTE**: 
+- O CSV **NÃO TEM CABEÇALHO** - os dados começam diretamente na primeira linha
+- A coluna "Time" deve ser a PRIMEIRA coluna (índice 0)
 
 ```
 0: Time
@@ -219,13 +221,18 @@ Ala Direita
 
 
 
-**Exemplo:**
+**Exemplo (SEM CABEÇALHO - dados direto):**
 
 ```
-Time,Nome,Nacionalidades,Idade,Pé Esquerdo,Pé Direito,...
 FC Schalke 04,Yassin Ben Balla,France,Morocco,29,6,20,...
 FC Schalke 04 S19,Zaid Tchibara,Togo,Germany,19,9,20,...
 ```
+
+**Nota**: O sistema detecta automaticamente o tipo de time baseado no nome:
+- `S19`, `S20`, etc. → Sub-19/20 (roxo)
+- Contém `EMP` → Emprestados (laranja)
+- Termina com espaço + número → Reserva (cinza)
+- Outros → Principal (azul)
 
 ![WhatsApp Image 2026-01-26 at 09 59 49 (6)](https://github.com/user-attachments/assets/77b252f3-156e-402f-a384-20b3904dac94)
 

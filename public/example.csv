@@ -1,0 +1,4 @@
+name,age,team,nat,primaryPositions,secondaryPositions,pace,acceleration,stamina,strength,balance,agility,jumping,naturalFitness,workRate,teamwork,aggression,bravery,decisions,composure,concentration,anticipation,vision,flair,determination,offTheBall,passing,crossing,dribbling,firstTouch,finishing,heading,longShots,technique,tackling,marking,positioning,reflexes,handling,command,aerial,oneOnOne,kicking,rushing,eccentricity,communication,throwing
+Neymar Jr,30,Paris Saint-Germain,BR,AML,AMR,ML,MR,15,16,14,12,15,17,12,14,13,12,15,14,16,15,14,18,16,15,17,16,15,18,17,14,16,15,14,13,12,8,10,9,11,8,12,10,9,8,7,6
+Lionel Messi,35,Paris Saint-Germain,AR,ST,AMC,14,13,13,11,14,15,10,12,12,15,10,13,16,17,15,18,19,15,16,18,17,19,16,15,14,18,17,16,13,12,6,8,7,9,6,11,9,8,7,6,5
+Kylian Mbappé,23,Paris Saint-Germain,FR,ST,18,18,16,15,14,17,13,16,15,14,13,14,15,13,14,12,16,17,14,15,17,16,18,15,14,13,12,11,10,7,9,8,10,7,13,11,10,9,8,7
