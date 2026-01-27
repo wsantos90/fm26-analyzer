@@ -46,9 +46,15 @@ interface Player {
     tracking: number;
     outlet: number;
   };
+  fm26Scores: {
+    ip: Record<string, number>;
+    oop: Record<string, number>;
+  };
   mainScore: number;
   category: 'elite' | 'titular' | 'rotacao' | 'promessa' | 'vender' | 'baixo_nivel';
   bestRole: string;
+  bestIPRole: string;
+  bestOOPRole: string;
 }
 
 interface FormationSlot {
@@ -58,6 +64,8 @@ interface FormationSlot {
   x: number;
   y: number;
   methodology: keyof Player['scores'];
+  ipRole?: string;
+  oopRole?: string;
 }
 
 // --- 2. CONFIGURAÇÕES & CONSTANTES ---
@@ -66,123 +74,174 @@ const POS_LABELS: Record<string, string> = {
   dmc: 'VOL', mc: 'MC', ml: 'ME', mr: 'MD', amc: 'MAC', aml: 'MAE', amr: 'MAD', st: 'PL'
 };
 
+// FM26 ROLE DEFINITIONS (Pesos de Atributos)
+const FM26_ROLES = {
+  // --- IN POSSESSION (IP) ---
+  ip: {
+    // Defensores
+    'Defesa com Bola': { passing: 3, vision: 2, composure: 2, technique: 1 },
+    'Zagueiro Lateral': { crossing: 2, dribbling: 1, pace: 2, positioning: 2 },
+    'Defesa Avançado': { passing: 3, vision: 2, dribbling: 2, composure: 2 }, // Libero moderno
+    'Lateral Invertido': { passing: 2, vision: 2, positioning: 3, decisions: 2 },
+    'Ala Armador': { passing: 3, vision: 3, crossing: 2, technique: 2 },
+    'Ala Ofensivo': { pace: 3, acceleration: 3, crossing: 3, dribbling: 2 },
+    
+    // Meio-Campo
+    'Construtor de Jogo Recuado': { passing: 4, vision: 3, composure: 3, firstTouch: 2 },
+    'Construtor Box-to-Box': { stamina: 3, passing: 3, vision: 2, workRate: 3 }, // Novo Roaming/Segundo Volante
+    'Meio-Campista de Canal': { pace: 3, acceleration: 3, stamina: 3, offTheBall: 3 }, // Novo Mezzala
+    'Construtor de Jogo Avançado': { passing: 3, vision: 3, technique: 2, flair: 2 },
+    
+    // Alas/Meias Ofensivos
+    'Extremo Interior': { dribbling: 3, finishing: 2, acceleration: 3, flair: 2 },
+    'Construtor de Jogo Aberto': { passing: 4, vision: 3, crossing: 2, technique: 2 },
+    'Função Livre': { flair: 4, vision: 3, passing: 3, dribbling: 3 }, // Novo Trequartista/Enganche
+    
+    // Atacantes
+    'Falso Nove': { vision: 3, passing: 3, dribbling: 2, composure: 2 },
+    'Avançado de Canal': { pace: 4, acceleration: 3, offTheBall: 3, workRate: 2 },
+    'Avançado Alvo': { strength: 4, heading: 4, balance: 3, teamwork: 2 }
+  },
+  
+  // --- OUT OF POSSESSION (OOP) ---
+  oop: {
+    // Defensores
+    'Zagueiro Tampão': { aggression: 3, bravery: 3, strength: 3, tackling: 2 },
+    'Zagueiro de Cobertura': { pace: 3, anticipation: 3, positioning: 3, concentration: 2 },
+    'Lateral de Pressão': { stamina: 3, aggression: 3, workRate: 3, tackling: 2 },
+    'Lateral de Contenção': { positioning: 4, marking: 3, concentration: 3, strength: 2 },
+    
+    // Meio-Campo
+    'Volante de Proteção': { positioning: 4, anticipation: 3, concentration: 3, strength: 2 }, // Novo Anchor
+    'Volante de Pressão': { aggression: 3, workRate: 3, stamina: 3, tackling: 2 },
+    'Volante de Cobertura': { pace: 2, stamina: 3, positioning: 3, teamwork: 2 }, // Cobre laterais
+    'Meio-Campista de Marcação': { stamina: 4, workRate: 4, teamwork: 3, positioning: 2 },
+    
+    // Alas/Atacantes
+    'Extremo de Marcação': { workRate: 4, stamina: 3, tackling: 2, teamwork: 3 },
+    'Extremo de Escape': { pace: 4, acceleration: 4, anticipation: 2, flair: 1 }, // Fica na frente
+    'Avançado de Pressão': { workRate: 4, aggression: 3, stamina: 4, teamwork: 3 },
+    'Pivô de Escape': { pace: 3, acceleration: 3, finishing: 2, composure: 1 } // Fica na banheira
+  }
+};
+
 const FORMATIONS: Record<string, FormationSlot[]> = {
   '4-3-3': [
     { id: 'gk', role: 'GR', positionKey: ['gk'], x: 50, y: 90, methodology: 'gk' },
-    { id: 'dl', role: 'DE', positionKey: ['dl', 'wbl'], x: 15, y: 75, methodology: 'tracking' },
-    { id: 'dcl', role: 'ZC', positionKey: ['dc'], x: 35, y: 80, methodology: 'engaged' },
-    { id: 'dcr', role: 'ZC', positionKey: ['dc'], x: 65, y: 80, methodology: 'engaged' },
-    { id: 'dr', role: 'DD', positionKey: ['dr', 'wbr'], x: 85, y: 75, methodology: 'tracking' },
-    { id: 'mcl', role: 'MC', positionKey: ['mc', 'dmc'], x: 30, y: 50, methodology: 'dynamic' },
-    { id: 'mcc', role: 'MC', positionKey: ['mc', 'dmc'], x: 50, y: 55, methodology: 'linking' },
-    { id: 'mcr', role: 'MC', positionKey: ['mc', 'dmc'], x: 70, y: 50, methodology: 'engaged' },
-    { id: 'aml', role: 'MAE', positionKey: ['aml', 'ml'], x: 20, y: 25, methodology: 'stretching' },
-    { id: 'amr', role: 'MAD', positionKey: ['amr', 'mr'], x: 80, y: 25, methodology: 'stretching' },
-    { id: 'st', role: 'PL', positionKey: ['st'], x: 50, y: 15, methodology: 'dynamic' }
+    { id: 'dl', role: 'DE', positionKey: ['dl', 'wbl'], x: 15, y: 75, methodology: 'tracking', ipRole: 'Lateral Invertido', oopRole: 'Lateral de Pressão' },
+    { id: 'dcl', role: 'ZC', positionKey: ['dc'], x: 35, y: 80, methodology: 'engaged', ipRole: 'Defesa com Bola', oopRole: 'Zagueiro Tampão' },
+    { id: 'dcr', role: 'ZC', positionKey: ['dc'], x: 65, y: 80, methodology: 'engaged', ipRole: 'Defesa Avançado', oopRole: 'Zagueiro de Cobertura' },
+    { id: 'dr', role: 'DD', positionKey: ['dr', 'wbr'], x: 85, y: 75, methodology: 'tracking', ipRole: 'Ala Ofensivo', oopRole: 'Lateral de Contenção' },
+    { id: 'mcl', role: 'MC', positionKey: ['mc', 'dmc'], x: 30, y: 50, methodology: 'dynamic', ipRole: 'Meio-Campista de Canal', oopRole: 'Meio-Campista de Marcação' },
+    { id: 'mcc', role: 'MC', positionKey: ['mc', 'dmc'], x: 50, y: 55, methodology: 'linking', ipRole: 'Construtor de Jogo Recuado', oopRole: 'Volante de Proteção' },
+    { id: 'mcr', role: 'MC', positionKey: ['mc', 'dmc'], x: 70, y: 50, methodology: 'engaged', ipRole: 'Construtor Box-to-Box', oopRole: 'Volante de Pressão' },
+    { id: 'aml', role: 'MAE', positionKey: ['aml', 'ml'], x: 20, y: 25, methodology: 'stretching', ipRole: 'Extremo Interior', oopRole: 'Extremo de Marcação' },
+    { id: 'amr', role: 'MAD', positionKey: ['amr', 'mr'], x: 80, y: 25, methodology: 'stretching', ipRole: 'Construtor de Jogo Aberto', oopRole: 'Extremo de Escape' },
+    { id: 'st', role: 'PL', positionKey: ['st'], x: 50, y: 15, methodology: 'dynamic', ipRole: 'Avançado de Canal', oopRole: 'Avançado de Pressão' }
   ],
   '3-5-2': [
     { id: 'gk', role: 'GR', positionKey: ['gk'], x: 50, y: 90, methodology: 'gk' },
-    { id: 'dcl', role: 'ZC', positionKey: ['dc'], x: 25, y: 80, methodology: 'tracking' },
-    { id: 'dcc', role: 'ZC', positionKey: ['dc'], x: 50, y: 82, methodology: 'linking' },
-    { id: 'dcr', role: 'ZC', positionKey: ['dc'], x: 75, y: 80, methodology: 'engaged' },
-    { id: 'wbl', role: 'AE', positionKey: ['wbl', 'dl', 'ml'], x: 10, y: 50, methodology: 'stretching' },
-    { id: 'dmc', role: 'VOL', positionKey: ['dmc', 'mc'], x: 50, y: 65, methodology: 'engaged' },
-    { id: 'wbr', role: 'AD', positionKey: ['wbr', 'dr', 'mr'], x: 90, y: 50, methodology: 'stretching' },
-    { id: 'mcl', role: 'MC', positionKey: ['mc', 'amc'], x: 35, y: 45, methodology: 'dynamic' },
-    { id: 'mcr', role: 'MC', positionKey: ['mc', 'amc'], x: 65, y: 45, methodology: 'linking' },
-    { id: 'stl', role: 'PL', positionKey: ['st'], x: 35, y: 15, methodology: 'outlet' },
-    { id: 'str', role: 'PL', positionKey: ['st'], x: 65, y: 15, methodology: 'dynamic' }
+    { id: 'dcl', role: 'ZC', positionKey: ['dc'], x: 25, y: 80, methodology: 'tracking', ipRole: 'Defesa com Bola', oopRole: 'Zagueiro Tampão' },
+    { id: 'dcc', role: 'ZC', positionKey: ['dc'], x: 50, y: 82, methodology: 'linking', ipRole: 'Defesa Avançado', oopRole: 'Zagueiro de Cobertura' },
+    { id: 'dcr', role: 'ZC', positionKey: ['dc'], x: 75, y: 80, methodology: 'engaged', ipRole: 'Defesa com Bola', oopRole: 'Zagueiro Tampão' },
+    { id: 'wbl', role: 'AE', positionKey: ['wbl', 'dl', 'ml'], x: 10, y: 50, methodology: 'stretching', ipRole: 'Ala Ofensivo', oopRole: 'Lateral de Pressão' },
+    { id: 'dmc', role: 'VOL', positionKey: ['dmc', 'mc'], x: 50, y: 65, methodology: 'engaged', ipRole: 'Construtor de Jogo Recuado', oopRole: 'Volante de Proteção' },
+    { id: 'wbr', role: 'AD', positionKey: ['wbr', 'dr', 'mr'], x: 90, y: 50, methodology: 'stretching', ipRole: 'Ala Ofensivo', oopRole: 'Lateral de Pressão' },
+    { id: 'mcl', role: 'MC', positionKey: ['mc', 'amc'], x: 35, y: 45, methodology: 'dynamic', ipRole: 'Construtor Box-to-Box', oopRole: 'Volante de Pressão' },
+    { id: 'mcr', role: 'MC', positionKey: ['mc', 'amc'], x: 65, y: 45, methodology: 'linking', ipRole: 'Construtor de Jogo Avançado', oopRole: 'Meio-Campista de Marcação' },
+    { id: 'stl', role: 'PL', positionKey: ['st'], x: 35, y: 15, methodology: 'outlet', ipRole: 'Avançado de Canal', oopRole: 'Avançado de Pressão' },
+    { id: 'str', role: 'PL', positionKey: ['st'], x: 65, y: 15, methodology: 'dynamic', ipRole: 'Avançado Alvo', oopRole: 'Avançado de Pressão' }
   ],
   '4-2-3-1': [
     { id: 'gk', role: 'GR', positionKey: ['gk'], x: 50, y: 90, methodology: 'gk' },
-    { id: 'dl', role: 'DE', positionKey: ['dl', 'wbl'], x: 10, y: 75, methodology: 'tracking' },
-    { id: 'dcl', role: 'ZC', positionKey: ['dc'], x: 35, y: 80, methodology: 'engaged' },
-    { id: 'dcr', role: 'ZC', positionKey: ['dc'], x: 65, y: 80, methodology: 'engaged' },
-    { id: 'dr', role: 'DD', positionKey: ['dr', 'wbr'], x: 90, y: 75, methodology: 'tracking' },
-    { id: 'dmcl', role: 'VOL', positionKey: ['dmc', 'mc'], x: 35, y: 60, methodology: 'engaged' },
-    { id: 'dmcr', role: 'VOL', positionKey: ['dmc', 'mc'], x: 65, y: 60, methodology: 'linking' },
-    { id: 'aml', role: 'MAE', positionKey: ['aml', 'ml'], x: 20, y: 35, methodology: 'stretching' },
-    { id: 'amc', role: 'MAC', positionKey: ['amc', 'mc'], x: 50, y: 35, methodology: 'linking' },
-    { id: 'amr', role: 'MAD', positionKey: ['amr', 'mr'], x: 80, y: 35, methodology: 'stretching' },
-    { id: 'st', role: 'PL', positionKey: ['st'], x: 50, y: 15, methodology: 'dynamic' }
+    { id: 'dl', role: 'DE', positionKey: ['dl', 'wbl'], x: 10, y: 75, methodology: 'tracking', ipRole: 'Lateral Invertido', oopRole: 'Lateral de Pressão' },
+    { id: 'dcl', role: 'ZC', positionKey: ['dc'], x: 35, y: 80, methodology: 'engaged', ipRole: 'Defesa com Bola', oopRole: 'Zagueiro Tampão' },
+    { id: 'dcr', role: 'ZC', positionKey: ['dc'], x: 65, y: 80, methodology: 'engaged', ipRole: 'Defesa Avançado', oopRole: 'Zagueiro de Cobertura' },
+    { id: 'dr', role: 'DD', positionKey: ['dr', 'wbr'], x: 90, y: 75, methodology: 'tracking', ipRole: 'Ala Ofensivo', oopRole: 'Lateral de Contenção' },
+    { id: 'dmcl', role: 'VOL', positionKey: ['dmc', 'mc'], x: 35, y: 60, methodology: 'engaged', ipRole: 'Construtor de Jogo Recuado', oopRole: 'Volante de Proteção' },
+    { id: 'dmcr', role: 'VOL', positionKey: ['dmc', 'mc'], x: 65, y: 60, methodology: 'linking', ipRole: 'Construtor Box-to-Box', oopRole: 'Volante de Pressão' },
+    { id: 'aml', role: 'MAE', positionKey: ['aml', 'ml'], x: 20, y: 35, methodology: 'stretching', ipRole: 'Extremo Interior', oopRole: 'Extremo de Marcação' },
+    { id: 'amc', role: 'MAC', positionKey: ['amc', 'mc'], x: 50, y: 35, methodology: 'linking', ipRole: 'Função Livre', oopRole: 'Meio-Campista de Marcação' },
+    { id: 'amr', role: 'MAD', positionKey: ['amr', 'mr'], x: 80, y: 35, methodology: 'stretching', ipRole: 'Construtor de Jogo Aberto', oopRole: 'Extremo de Escape' },
+    { id: 'st', role: 'PL', positionKey: ['st'], x: 50, y: 15, methodology: 'dynamic', ipRole: 'Avançado de Canal', oopRole: 'Avançado de Pressão' }
   ],
   '4-4-2 Diamond': [
     { id: 'gk', role: 'GR', positionKey: ['gk'], x: 50, y: 90, methodology: 'gk' },
-    { id: 'dl', role: 'DE', positionKey: ['dl', 'wbl'], x: 15, y: 75, methodology: 'tracking' },
-    { id: 'dcl', role: 'ZC', positionKey: ['dc'], x: 35, y: 80, methodology: 'engaged' },
-    { id: 'dcr', role: 'ZC', positionKey: ['dc'], x: 65, y: 80, methodology: 'engaged' },
-    { id: 'dr', role: 'DD', positionKey: ['dr', 'wbr'], x: 85, y: 75, methodology: 'tracking' },
-    { id: 'dmc', role: 'VOL', positionKey: ['dmc', 'mc'], x: 50, y: 62, methodology: 'engaged' },
-    { id: 'mcl', role: 'MC', positionKey: ['mc'], x: 30, y: 48, methodology: 'linking' },
-    { id: 'mcr', role: 'MC', positionKey: ['mc'], x: 70, y: 48, methodology: 'linking' },
-    { id: 'amc', role: 'MAC', positionKey: ['amc', 'mc'], x: 50, y: 32, methodology: 'linking' },
-    { id: 'stl', role: 'PL', positionKey: ['st'], x: 40, y: 15, methodology: 'dynamic' },
-    { id: 'str', role: 'PL', positionKey: ['st'], x: 60, y: 15, methodology: 'outlet' }
+    { id: 'dl', role: 'DE', positionKey: ['dl', 'wbl'], x: 15, y: 75, methodology: 'tracking', ipRole: 'Lateral Invertido', oopRole: 'Lateral de Contenção' },
+    { id: 'dcl', role: 'ZC', positionKey: ['dc'], x: 35, y: 80, methodology: 'engaged', ipRole: 'Defesa com Bola', oopRole: 'Zagueiro Tampão' },
+    { id: 'dcr', role: 'ZC', positionKey: ['dc'], x: 65, y: 80, methodology: 'engaged', ipRole: 'Defesa com Bola', oopRole: 'Zagueiro de Cobertura' },
+    { id: 'dr', role: 'DD', positionKey: ['dr', 'wbr'], x: 85, y: 75, methodology: 'tracking', ipRole: 'Ala Ofensivo', oopRole: 'Lateral de Pressão' },
+    { id: 'dmc', role: 'VOL', positionKey: ['dmc', 'mc'], x: 50, y: 62, methodology: 'engaged', ipRole: 'Construtor de Jogo Recuado', oopRole: 'Volante de Proteção' },
+    { id: 'mcl', role: 'MC', positionKey: ['mc'], x: 30, y: 48, methodology: 'linking', ipRole: 'Construtor Box-to-Box', oopRole: 'Volante de Pressão' },
+    { id: 'mcr', role: 'MC', positionKey: ['mc'], x: 70, y: 48, methodology: 'linking', ipRole: 'Construtor de Jogo Avançado', oopRole: 'Meio-Campista de Marcação' },
+    { id: 'amc', role: 'MAC', positionKey: ['amc', 'mc'], x: 50, y: 32, methodology: 'linking', ipRole: 'Função Livre', oopRole: 'Meio-Campista de Marcação' },
+    { id: 'stl', role: 'PL', positionKey: ['st'], x: 40, y: 15, methodology: 'dynamic', ipRole: 'Falso Nove', oopRole: 'Avançado de Pressão' },
+    { id: 'str', role: 'PL', positionKey: ['st'], x: 60, y: 15, methodology: 'outlet', ipRole: 'Avançado de Canal', oopRole: 'Pivô de Escape' }
   ],
   '4-1-2-3': [
     { id: 'gk', role: 'GR', positionKey: ['gk'], x: 50, y: 90, methodology: 'gk' },
-    { id: 'dl', role: 'DE', positionKey: ['dl', 'wbl'], x: 15, y: 75, methodology: 'tracking' },
-    { id: 'dcl', role: 'ZC', positionKey: ['dc'], x: 35, y: 80, methodology: 'engaged' },
-    { id: 'dcr', role: 'ZC', positionKey: ['dc'], x: 65, y: 80, methodology: 'engaged' },
-    { id: 'dr', role: 'DD', positionKey: ['dr', 'wbr'], x: 85, y: 75, methodology: 'tracking' },
-    { id: 'dmc', role: 'VOL', positionKey: ['dmc', 'mc'], x: 50, y: 62, methodology: 'engaged' },
-    { id: 'mcl', role: 'MC', positionKey: ['mc', 'amc'], x: 35, y: 48, methodology: 'linking' },
-    { id: 'mcr', role: 'MC', positionKey: ['mc', 'amc'], x: 65, y: 48, methodology: 'linking' },
-    { id: 'aml', role: 'MAE', positionKey: ['aml', 'ml'], x: 20, y: 25, methodology: 'stretching' },
-    { id: 'amr', role: 'MAD', positionKey: ['amr', 'mr'], x: 80, y: 25, methodology: 'stretching' },
-    { id: 'st', role: 'PL', positionKey: ['st'], x: 50, y: 12, methodology: 'dynamic' }
+    { id: 'dl', role: 'DE', positionKey: ['dl', 'wbl'], x: 15, y: 75, methodology: 'tracking', ipRole: 'Lateral Invertido', oopRole: 'Lateral de Pressão' },
+    { id: 'dcl', role: 'ZC', positionKey: ['dc'], x: 35, y: 80, methodology: 'engaged', ipRole: 'Defesa com Bola', oopRole: 'Zagueiro Tampão' },
+    { id: 'dcr', role: 'ZC', positionKey: ['dc'], x: 65, y: 80, methodology: 'engaged', ipRole: 'Defesa Avançado', oopRole: 'Zagueiro de Cobertura' },
+    { id: 'dr', role: 'DD', positionKey: ['dr', 'wbr'], x: 85, y: 75, methodology: 'tracking', ipRole: 'Ala Ofensivo', oopRole: 'Lateral de Contenção' },
+    { id: 'dmc', role: 'VOL', positionKey: ['dmc', 'mc'], x: 50, y: 62, methodology: 'engaged', ipRole: 'Construtor de Jogo Recuado', oopRole: 'Volante de Proteção' },
+    { id: 'mcl', role: 'MC', positionKey: ['mc', 'amc'], x: 35, y: 48, methodology: 'linking', ipRole: 'Meio-Campista de Canal', oopRole: 'Meio-Campista de Marcação' },
+    { id: 'mcr', role: 'MC', positionKey: ['mc', 'amc'], x: 65, y: 48, methodology: 'linking', ipRole: 'Construtor Box-to-Box', oopRole: 'Volante de Pressão' },
+    { id: 'aml', role: 'MAE', positionKey: ['aml', 'ml'], x: 20, y: 25, methodology: 'stretching', ipRole: 'Extremo Interior', oopRole: 'Extremo de Marcação' },
+    { id: 'amr', role: 'MAD', positionKey: ['amr', 'mr'], x: 80, y: 25, methodology: 'stretching', ipRole: 'Construtor de Jogo Aberto', oopRole: 'Extremo de Escape' },
+    { id: 'st', role: 'PL', positionKey: ['st'], x: 50, y: 12, methodology: 'dynamic', ipRole: 'Avançado de Canal', oopRole: 'Avançado de Pressão' }
   ],
   '5-4-1': [
     { id: 'gk', role: 'GR', positionKey: ['gk'], x: 50, y: 90, methodology: 'gk' },
-    { id: 'dl', role: 'DE', positionKey: ['dl', 'wbl'], x: 10, y: 75, methodology: 'tracking' },
-    { id: 'dcl', role: 'ZC', positionKey: ['dc'], x: 30, y: 80, methodology: 'engaged' },
-    { id: 'dcc', role: 'ZC', positionKey: ['dc'], x: 50, y: 82, methodology: 'engaged' },
-    { id: 'dcr', role: 'ZC', positionKey: ['dc'], x: 70, y: 80, methodology: 'engaged' },
-    { id: 'dr', role: 'DD', positionKey: ['dr', 'wbr'], x: 90, y: 75, methodology: 'tracking' },
-    { id: 'mcl', role: 'MC', positionKey: ['mc', 'dmc'], x: 30, y: 55, methodology: 'engaged' },
-    { id: 'mccl', role: 'MC', positionKey: ['mc', 'dmc'], x: 45, y: 52, methodology: 'linking' },
-    { id: 'mccr', role: 'MC', positionKey: ['mc', 'dmc'], x: 55, y: 52, methodology: 'linking' },
-    { id: 'mcr', role: 'MC', positionKey: ['mc', 'dmc'], x: 70, y: 55, methodology: 'engaged' },
-    { id: 'st', role: 'PL', positionKey: ['st'], x: 50, y: 15, methodology: 'outlet' }
+    { id: 'dl', role: 'DE', positionKey: ['dl', 'wbl'], x: 10, y: 75, methodology: 'tracking', ipRole: 'Lateral Invertido', oopRole: 'Lateral de Contenção' },
+    { id: 'dcl', role: 'ZC', positionKey: ['dc'], x: 30, y: 80, methodology: 'engaged', ipRole: 'Defesa com Bola', oopRole: 'Zagueiro Tampão' },
+    { id: 'dcc', role: 'ZC', positionKey: ['dc'], x: 50, y: 82, methodology: 'engaged', ipRole: 'Defesa Avançado', oopRole: 'Zagueiro de Cobertura' },
+    { id: 'dcr', role: 'ZC', positionKey: ['dc'], x: 70, y: 80, methodology: 'engaged', ipRole: 'Defesa com Bola', oopRole: 'Zagueiro Tampão' },
+    { id: 'dr', role: 'DD', positionKey: ['dr', 'wbr'], x: 90, y: 75, methodology: 'tracking', ipRole: 'Lateral Invertido', oopRole: 'Lateral de Pressão' },
+    { id: 'mcl', role: 'MC', positionKey: ['mc', 'dmc'], x: 30, y: 55, methodology: 'engaged', ipRole: 'Construtor de Jogo Aberto', oopRole: 'Meio-Campista de Marcação' },
+    { id: 'mccl', role: 'MC', positionKey: ['mc', 'dmc'], x: 45, y: 52, methodology: 'linking', ipRole: 'Construtor de Jogo Recuado', oopRole: 'Volante de Proteção' },
+    { id: 'mccr', role: 'MC', positionKey: ['mc', 'dmc'], x: 55, y: 52, methodology: 'linking', ipRole: 'Construtor Box-to-Box', oopRole: 'Volante de Pressão' },
+    { id: 'mcr', role: 'MC', positionKey: ['mc', 'dmc'], x: 70, y: 55, methodology: 'engaged', ipRole: 'Construtor de Jogo Aberto', oopRole: 'Meio-Campista de Marcação' },
+    { id: 'st', role: 'PL', positionKey: ['st'], x: 50, y: 15, methodology: 'outlet', ipRole: 'Avançado Alvo', oopRole: 'Pivô de Escape' }
   ],
   '3-4-3': [
     { id: 'gk', role: 'GR', positionKey: ['gk'], x: 50, y: 90, methodology: 'gk' },
-    { id: 'dcl', role: 'ZC', positionKey: ['dc'], x: 30, y: 80, methodology: 'engaged' },
-    { id: 'dcc', role: 'ZC', positionKey: ['dc'], x: 50, y: 82, methodology: 'engaged' },
-    { id: 'dcr', role: 'ZC', positionKey: ['dc'], x: 70, y: 80, methodology: 'engaged' },
-    { id: 'mcl', role: 'MC', positionKey: ['mc', 'dmc', 'ml'], x: 25, y: 55, methodology: 'engaged' },
-    { id: 'mccl', role: 'MC', positionKey: ['mc', 'dmc'], x: 42, y: 58, methodology: 'linking' },
-    { id: 'mccr', role: 'MC', positionKey: ['mc', 'dmc'], x: 58, y: 58, methodology: 'linking' },
-    { id: 'mcr', role: 'MC', positionKey: ['mc', 'dmc', 'mr'], x: 75, y: 55, methodology: 'engaged' },
-    { id: 'aml', role: 'MAE', positionKey: ['aml', 'ml', 'st'], x: 20, y: 20, methodology: 'stretching' },
-    { id: 'st', role: 'PL', positionKey: ['st'], x: 50, y: 12, methodology: 'dynamic' },
-    { id: 'amr', role: 'MAD', positionKey: ['amr', 'mr', 'st'], x: 80, y: 20, methodology: 'stretching' }
+    { id: 'dcl', role: 'ZC', positionKey: ['dc'], x: 30, y: 80, methodology: 'engaged', ipRole: 'Defesa com Bola', oopRole: 'Zagueiro Tampão' },
+    { id: 'dcc', role: 'ZC', positionKey: ['dc'], x: 50, y: 82, methodology: 'engaged', ipRole: 'Defesa Avançado', oopRole: 'Zagueiro de Cobertura' },
+    { id: 'dcr', role: 'ZC', positionKey: ['dc'], x: 70, y: 80, methodology: 'engaged', ipRole: 'Defesa com Bola', oopRole: 'Zagueiro Tampão' },
+    { id: 'mcl', role: 'MC', positionKey: ['mc', 'dmc', 'ml'], x: 25, y: 55, methodology: 'engaged', ipRole: 'Ala Ofensivo', oopRole: 'Lateral de Pressão' },
+    { id: 'mccl', role: 'MC', positionKey: ['mc', 'dmc'], x: 42, y: 58, methodology: 'linking', ipRole: 'Construtor de Jogo Recuado', oopRole: 'Volante de Proteção' },
+    { id: 'mccr', role: 'MC', positionKey: ['mc', 'dmc'], x: 58, y: 58, methodology: 'linking', ipRole: 'Construtor Box-to-Box', oopRole: 'Volante de Pressão' },
+    { id: 'mcr', role: 'MC', positionKey: ['mc', 'dmc', 'mr'], x: 75, y: 55, methodology: 'engaged', ipRole: 'Ala Ofensivo', oopRole: 'Lateral de Pressão' },
+    { id: 'aml', role: 'MAE', positionKey: ['aml', 'ml', 'st'], x: 20, y: 20, methodology: 'stretching', ipRole: 'Extremo Interior', oopRole: 'Extremo de Marcação' },
+    { id: 'st', role: 'PL', positionKey: ['st'], x: 50, y: 12, methodology: 'dynamic', ipRole: 'Avançado de Canal', oopRole: 'Avançado de Pressão' },
+    { id: 'amr', role: 'MAD', positionKey: ['amr', 'mr', 'st'], x: 80, y: 20, methodology: 'stretching', ipRole: 'Construtor de Jogo Aberto', oopRole: 'Extremo de Escape' }
   ],
   '4-3-1-2': [
     { id: 'gk', role: 'GR', positionKey: ['gk'], x: 50, y: 90, methodology: 'gk' },
-    { id: 'dl', role: 'DE', positionKey: ['dl', 'wbl'], x: 15, y: 75, methodology: 'tracking' },
-    { id: 'dcl', role: 'ZC', positionKey: ['dc'], x: 35, y: 80, methodology: 'engaged' },
-    { id: 'dcr', role: 'ZC', positionKey: ['dc'], x: 65, y: 80, methodology: 'engaged' },
-    { id: 'dr', role: 'DD', positionKey: ['dr', 'wbr'], x: 85, y: 75, methodology: 'tracking' },
-    { id: 'mcl', role: 'MC', positionKey: ['mc', 'dmc'], x: 30, y: 55, methodology: 'engaged' },
-    { id: 'mcc', role: 'MC', positionKey: ['mc', 'dmc'], x: 50, y: 58, methodology: 'linking' },
-    { id: 'mcr', role: 'MC', positionKey: ['mc', 'dmc'], x: 70, y: 55, methodology: 'engaged' },
-    { id: 'amc', role: 'MAC', positionKey: ['amc', 'mc'], x: 50, y: 35, methodology: 'linking' },
-    { id: 'stl', role: 'PL', positionKey: ['st'], x: 40, y: 15, methodology: 'dynamic' },
-    { id: 'str', role: 'PL', positionKey: ['st'], x: 60, y: 15, methodology: 'dynamic' }
+    { id: 'dl', role: 'DE', positionKey: ['dl', 'wbl'], x: 15, y: 75, methodology: 'tracking', ipRole: 'Lateral Invertido', oopRole: 'Lateral de Contenção' },
+    { id: 'dcl', role: 'ZC', positionKey: ['dc'], x: 35, y: 80, methodology: 'engaged', ipRole: 'Defesa com Bola', oopRole: 'Zagueiro Tampão' },
+    { id: 'dcr', role: 'ZC', positionKey: ['dc'], x: 65, y: 80, methodology: 'engaged', ipRole: 'Defesa com Bola', oopRole: 'Zagueiro de Cobertura' },
+    { id: 'dr', role: 'DD', positionKey: ['dr', 'wbr'], x: 85, y: 75, methodology: 'tracking', ipRole: 'Ala Ofensivo', oopRole: 'Lateral de Pressão' },
+    { id: 'mcl', role: 'MC', positionKey: ['mc', 'dmc'], x: 30, y: 55, methodology: 'engaged', ipRole: 'Meio-Campista de Canal', oopRole: 'Meio-Campista de Marcação' },
+    { id: 'mcc', role: 'MC', positionKey: ['mc', 'dmc'], x: 50, y: 58, methodology: 'linking', ipRole: 'Construtor de Jogo Recuado', oopRole: 'Volante de Proteção' },
+    { id: 'mcr', role: 'MC', positionKey: ['mc', 'dmc'], x: 70, y: 55, methodology: 'engaged', ipRole: 'Construtor Box-to-Box', oopRole: 'Volante de Pressão' },
+    { id: 'amc', role: 'MAC', positionKey: ['amc', 'mc'], x: 50, y: 35, methodology: 'linking', ipRole: 'Função Livre', oopRole: 'Meio-Campista de Marcação' },
+    { id: 'stl', role: 'PL', positionKey: ['st'], x: 40, y: 15, methodology: 'dynamic', ipRole: 'Falso Nove', oopRole: 'Avançado de Pressão' },
+    { id: 'str', role: 'PL', positionKey: ['st'], x: 60, y: 15, methodology: 'dynamic', ipRole: 'Avançado de Canal', oopRole: 'Pivô de Escape' }
   ],
   '3-4-2-1': [
     { id: 'gk', role: 'GR', positionKey: ['gk'], x: 50, y: 90, methodology: 'gk' },
-    { id: 'dcl', role: 'ZC', positionKey: ['dc'], x: 30, y: 80, methodology: 'engaged' },
-    { id: 'dcc', role: 'ZC', positionKey: ['dc'], x: 50, y: 82, methodology: 'engaged' },
-    { id: 'dcr', role: 'ZC', positionKey: ['dc'], x: 70, y: 80, methodology: 'engaged' },
-    { id: 'mcl', role: 'MC', positionKey: ['mc', 'dmc', 'ml'], x: 25, y: 58, methodology: 'tracking' },
-    { id: 'mccl', role: 'MC', positionKey: ['mc', 'dmc'], x: 42, y: 60, methodology: 'engaged' },
-    { id: 'mccr', role: 'MC', positionKey: ['mc', 'dmc'], x: 58, y: 60, methodology: 'engaged' },
-    { id: 'mcr', role: 'MC', positionKey: ['mc', 'dmc', 'mr'], x: 75, y: 58, methodology: 'tracking' },
-    { id: 'amcl', role: 'MAC', positionKey: ['amc', 'mc', 'aml'], x: 38, y: 32, methodology: 'linking' },
-    { id: 'amcr', role: 'MAC', positionKey: ['amc', 'mc', 'amr'], x: 62, y: 32, methodology: 'linking' },
-    { id: 'st', role: 'PL', positionKey: ['st'], x: 50, y: 12, methodology: 'outlet' }
+    { id: 'dcl', role: 'ZC', positionKey: ['dc'], x: 30, y: 80, methodology: 'engaged', ipRole: 'Defesa com Bola', oopRole: 'Zagueiro Tampão' },
+    { id: 'dcc', role: 'ZC', positionKey: ['dc'], x: 50, y: 82, methodology: 'engaged', ipRole: 'Defesa Avançado', oopRole: 'Zagueiro de Cobertura' },
+    { id: 'dcr', role: 'ZC', positionKey: ['dc'], x: 70, y: 80, methodology: 'engaged', ipRole: 'Defesa com Bola', oopRole: 'Zagueiro Tampão' },
+    { id: 'mcl', role: 'MC', positionKey: ['mc', 'dmc', 'ml'], x: 25, y: 58, methodology: 'tracking', ipRole: 'Ala Ofensivo', oopRole: 'Lateral de Pressão' },
+    { id: 'mccl', role: 'MC', positionKey: ['mc', 'dmc'], x: 42, y: 60, methodology: 'engaged', ipRole: 'Construtor de Jogo Recuado', oopRole: 'Volante de Proteção' },
+    { id: 'mccr', role: 'MC', positionKey: ['mc', 'dmc'], x: 58, y: 60, methodology: 'engaged', ipRole: 'Construtor Box-to-Box', oopRole: 'Volante de Pressão' },
+    { id: 'mcr', role: 'MC', positionKey: ['mc', 'dmc', 'mr'], x: 75, y: 58, methodology: 'tracking', ipRole: 'Ala Ofensivo', oopRole: 'Lateral de Pressão' },
+    { id: 'amcl', role: 'MAC', positionKey: ['amc', 'mc', 'aml'], x: 38, y: 32, methodology: 'linking', ipRole: 'Extremo Interior', oopRole: 'Extremo de Marcação' },
+    { id: 'amcr', role: 'MAC', positionKey: ['amc', 'mc', 'amr'], x: 62, y: 32, methodology: 'linking', ipRole: 'Construtor de Jogo Aberto', oopRole: 'Extremo de Escape' },
+    { id: 'st', role: 'PL', positionKey: ['st'], x: 50, y: 12, methodology: 'outlet', ipRole: 'Avançado Alvo', oopRole: 'Pivô de Escape' }
   ]
 };
 
@@ -210,6 +269,34 @@ const calculateScores = (attr: PlayerAttributes, isGk: boolean) => {
     tracking: (attr.tackling + attr.marking + attr.positioning + attr.stamina + attr.concentration) / 5,
     outlet: (attr.strength + attr.heading + attr.firstTouch + attr.balance + attr.composure) / 5
   };
+};
+
+const calculateFM26Scores = (attr: PlayerAttributes) => {
+  const scores: { ip: Record<string, number>; oop: Record<string, number> } = { ip: {}, oop: {} };
+  
+  // Calculate IP Roles
+  Object.entries(FM26_ROLES.ip).forEach(([role, weights]) => {
+    let total = 0;
+    let weightSum = 0;
+    Object.entries(weights).forEach(([key, weight]) => {
+      total += (attr[key as keyof PlayerAttributes] || 0) * weight;
+      weightSum += weight;
+    });
+    scores.ip[role] = total / weightSum;
+  });
+  
+  // Calculate OOP Roles
+  Object.entries(FM26_ROLES.oop).forEach(([role, weights]) => {
+    let total = 0;
+    let weightSum = 0;
+    Object.entries(weights).forEach(([key, weight]) => {
+      total += (attr[key as keyof PlayerAttributes] || 0) * weight;
+      weightSum += weight;
+    });
+    scores.oop[role] = total / weightSum;
+  });
+  
+  return scores;
 };
 
 const analyzeCSV = (data: any[]): Player[] => {
@@ -306,6 +393,7 @@ const analyzeCSV = (data: any[]): Player[] => {
       const isGk = posMap.gk > 15;
 
       const scores = calculateScores(attr, isGk);
+      const fm26Scores = calculateFM26Scores(attr);
 
       let mainScore = 0;
       if (isGk) mainScore = scores.gk;
@@ -331,6 +419,13 @@ const analyzeCSV = (data: any[]): Player[] => {
         if (bestMethod) bestRole = bestMethod[0].toUpperCase();
       }
 
+      // Calculate Best FM26 Roles
+      const bestIPRoleEntry = Object.entries(fm26Scores.ip).sort((a, b) => b[1] - a[1])[0];
+      const bestIPRole = bestIPRoleEntry ? bestIPRoleEntry[0] : '-';
+
+      const bestOOPRoleEntry = Object.entries(fm26Scores.oop).sort((a, b) => b[1] - a[1])[0];
+      const bestOOPRole = bestOOPRoleEntry ? bestOOPRoleEntry[0] : '-';
+
       return {
         id: idx.toString(),
         team, // NOVO
@@ -341,9 +436,12 @@ const analyzeCSV = (data: any[]): Player[] => {
         positions: { primary, secondary },
         attributes: attr,
         scores,
+        fm26Scores, // ADDED
         mainScore,
         category,
-        bestRole
+        bestRole,
+        bestIPRole, // ADDED
+        bestOOPRole // ADDED
       };
     }).sort((a, b) => b.mainScore - a.mainScore);
 };
@@ -352,7 +450,16 @@ const analyzeCSV = (data: any[]): Player[] => {
 const FMAnalyzer = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [players, setPlayers] = useState<Player[]>([]);
-  const [formation, setFormation] = useState('4-3-3');
+  
+  // FM26 Tactics State
+  const [formationIP, setFormationIP] = useState('4-3-3');
+  const [formationOOP, setFormationOOP] = useState('4-4-2 Diamond');
+  const [tacticalPhase, setTacticalPhase] = useState<'ip' | 'oop'>('ip');
+  
+  // Derived state for compatibility
+  const formation = tacticalPhase === 'ip' ? formationIP : formationOOP;
+  const setFormation = (fmt: string) => tacticalPhase === 'ip' ? setFormationIP(fmt) : setFormationOOP(fmt);
+
   const [history, setHistory] = useState<{ date: string, count: number, avgScore: number }[]>([]);
   const [compareList, setCompareList] = useState<Player[]>([]);
   const [showCompareModal, setShowCompareModal] = useState(false);
@@ -496,57 +603,104 @@ const FMAnalyzer = () => {
   const TacticsBoard = () => {
     const slots = FORMATIONS[formation];
 
-    // Algoritmo de Recomendação de Formações
+    const FM26_INSTRUCTIONS = {
+      ip: {
+        'Terço Final': ['Drible', 'Paciência', 'Chutes de Longe', 'Estilo de Cruzamento'],
+        'Progressão': ['Corridas de Apoio', 'Progredir Através', 'Recepção de Passe'],
+        'Construção': ['Estratégia de Construção', 'Tiros de Meta', 'Distribuição do GR']
+      },
+      oop: {
+        'Pressão Alta': ['Armadilhas de Pressão', 'Distribuição Curta do GR'],
+        'Bloco Médio': ['Armadilha de Pressão'],
+        'Bloco Baixo': ['Envolvimento em Cruzamentos']
+      }
+    };
+
+        {/* Algoritmo de Recomendação de Formações */}
     const recommendedFormations = useMemo(() => {
+      // Se não houver jogadores, retorna lista vazia
       if (players.length === 0) return [];
 
+      // Mapeia todas as formações possíveis para calcular a pontuação de cada uma
       return Object.entries(FORMATIONS).map(([formName, formSlots]) => {
-        const usedIds = new Set<string>();
+        const usedIds = new Set<string>(); // Rastreia jogadores já usados nesta formação para não repetir
         let totalScore = 0;
         let filledSlots = 0;
 
-        // Ordenar slots por importância (opcional, aqui simplificado)
+        // Cria uma cópia dos slots da formação
         const sortedSlots = [...formSlots];
 
+        // Para cada posição na formação...
         for (const slot of sortedSlots) {
+          // Encontra candidatos elegíveis:
+          // 1. Não usados ainda
+          // 2. Não marcados para venda/baixo nível
+          // 3. Que jogam na posição exigida (ex: 'mc', 'st')
           const candidates = players.filter(p =>
             !usedIds.has(p.id) &&
             p.category !== 'vender' && p.category !== 'baixo_nivel' &&
             slot.positionKey.some(k => p.positions.primary.includes(k))
           );
 
-          // @ts-ignore
-          candidates.sort((a, b) => b.scores[slot.methodology] - a.scores[slot.methodology]);
+          // Ordena candidatos pela pontuação específica da metodologia daquela posição
+          // Agora suporta FM26 IP/OOP roles
+          candidates.sort((a, b) => {
+            if (tacticalPhase === 'ip' && slot.ipRole && a.fm26Scores.ip[slot.ipRole]) {
+               return b.fm26Scores.ip[slot.ipRole] - a.fm26Scores.ip[slot.ipRole];
+            }
+            if (tacticalPhase === 'oop' && slot.oopRole && a.fm26Scores.oop[slot.oopRole]) {
+               return b.fm26Scores.oop[slot.oopRole] - a.fm26Scores.oop[slot.oopRole];
+            }
+            // @ts-ignore
+            return b.scores[slot.methodology] - a.scores[slot.methodology];
+          });
 
           const best = candidates[0];
           if (best) {
-            // @ts-ignore
-            totalScore += best.scores[slot.methodology];
+            let score = 0;
+            if (tacticalPhase === 'ip' && slot.ipRole && best.fm26Scores.ip[slot.ipRole]) {
+               score = best.fm26Scores.ip[slot.ipRole];
+            } else if (tacticalPhase === 'oop' && slot.oopRole && best.fm26Scores.oop[slot.oopRole]) {
+               score = best.fm26Scores.oop[slot.oopRole];
+            } else {
+               // @ts-ignore
+               score = best.scores[slot.methodology];
+            }
+            totalScore += score; // Soma a pontuação ao total do time
             filledSlots++;
-            usedIds.add(best.id);
+            usedIds.add(best.id); // Marca jogador como usado
           }
         }
 
         return {
           name: formName,
-          score: filledSlots === 11 ? totalScore / 11 : 0, // Só considera se preencher os 11
+          score: filledSlots === 11 ? totalScore / 11 : 0, // Calcula média apenas se preencher os 11 titulares
           filled: filledSlots
         };
       })
-        .filter(f => f.filled === 11)
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 3);
+        .filter(f => f.filled === 11) // Remove formações que não conseguimos preencher
+        .sort((a, b) => b.score - a.score) // Ordena da maior pontuação para a menor
+        .slice(0, 3); // Pega apenas as top 3
     }, [players]);
 
-    const getPlayerForSlot = (posKeys: string[], method: string, excludeIds: string[]) => {
+    const getPlayerForSlot = (slot: FormationSlot, excludeIds: string[]) => {
       const candidates = players.filter(p =>
         !excludeIds.includes(p.id) &&
         p.category !== 'vender' && p.category !== 'baixo_nivel' &&
-        posKeys.some(k => p.positions.primary.includes(k))
+        slot.positionKey.some(k => p.positions.primary.includes(k))
       );
 
       // @ts-ignore
-      candidates.sort((a, b) => b.scores[method] - a.scores[method]);
+      candidates.sort((a, b) => {
+        if (tacticalPhase === 'ip' && slot.ipRole && a.fm26Scores.ip[slot.ipRole]) {
+            return b.fm26Scores.ip[slot.ipRole] - a.fm26Scores.ip[slot.ipRole];
+        }
+        if (tacticalPhase === 'oop' && slot.oopRole && a.fm26Scores.oop[slot.oopRole]) {
+            return b.fm26Scores.oop[slot.oopRole] - a.fm26Scores.oop[slot.oopRole];
+        }
+        // @ts-ignore
+        return b.scores[slot.methodology] - a.scores[slot.methodology];
+      });
 
       return {
         main: candidates[0],
@@ -558,7 +712,7 @@ const FMAnalyzer = () => {
     // SISTEMA ANTI-DUPLICATAS: rastreia TODOS os jogadores usados (titular, reserva E promessa)
     const assignedIds: string[] = [];
     const lineup = slots.map(slot => {
-      const data = getPlayerForSlot(slot.positionKey, slot.methodology as string, assignedIds);
+      const data = getPlayerForSlot(slot, assignedIds);
       // Adiciona TODOS os jogadores selecionados à lista de exclusão
       if (data.main) assignedIds.push(data.main.id);
       if (data.backup) assignedIds.push(data.backup.id);
@@ -568,15 +722,36 @@ const FMAnalyzer = () => {
 
     return (
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        
+        {/* FM26 Phase Selector */}
+        <div className="lg:col-span-3 flex justify-center mb-2">
+           <div className="bg-slate-900/80 p-1 rounded-xl flex gap-2 border border-white/10 shadow-2xl">
+              <button 
+                onClick={() => setTacticalPhase('ip')}
+                className={`flex items-center gap-2 px-8 py-3 rounded-lg font-black text-sm uppercase tracking-widest transition-all ${tacticalPhase === 'ip' ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/50 ring-1 ring-white/20' : 'text-slate-500 hover:text-white hover:bg-white/5'}`}
+              >
+                <Activity size={16} /> Com a Posse (IP)
+              </button>
+              <button 
+                onClick={() => setTacticalPhase('oop')}
+                className={`flex items-center gap-2 px-8 py-3 rounded-lg font-black text-sm uppercase tracking-widest transition-all ${tacticalPhase === 'oop' ? 'bg-red-600 text-white shadow-lg shadow-red-900/50 ring-1 ring-white/20' : 'text-slate-500 hover:text-white hover:bg-white/5'}`}
+              >
+                <Shield size={16} /> Sem a Posse (OOP)
+              </button>
+           </div>
+        </div>
+
         {/* Recomendação de Formações */}
         {recommendedFormations.length > 0 && (
-          <div className="lg:col-span-3 bg-slate-900/60 backdrop-blur-md p-6 rounded-2xl border border-blue-500/20 shadow-lg flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden group">
-            <div className="absolute inset-0 bg-blue-600/5 group-hover:bg-blue-600/10 transition-colors"></div>
+          <div className={`lg:col-span-3 bg-slate-900/60 backdrop-blur-md p-6 rounded-2xl border shadow-lg flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden group ${tacticalPhase === 'ip' ? 'border-blue-500/20' : 'border-red-500/20'}`}>
+            <div className={`absolute inset-0 ${tacticalPhase === 'ip' ? 'bg-blue-600/5 group-hover:bg-blue-600/10' : 'bg-red-600/5 group-hover:bg-red-600/10'} transition-colors`}></div>
             <div className="flex items-center gap-4 relative z-10">
-              <div className="bg-blue-600 p-3 rounded-xl shadow-lg shadow-blue-900/30 text-white"><Trophy size={28} /></div>
+              <div className={`${tacticalPhase === 'ip' ? 'bg-blue-600 shadow-blue-900/30' : 'bg-red-600 shadow-red-900/30'} p-3 rounded-xl shadow-lg text-white`}><Trophy size={28} /></div>
               <div>
                 <h3 className="text-white font-black text-xl tracking-tight uppercase">Formações Recomendadas</h3>
-                <p className="text-blue-200 text-xs font-medium tracking-wide">IA Tática baseada no seu melhor 11</p>
+                <p className={`${tacticalPhase === 'ip' ? 'text-blue-200' : 'text-red-200'} text-xs font-medium tracking-wide`}>
+                  Melhor estrutura {tacticalPhase === 'ip' ? 'Ofensiva' : 'Defensiva'} baseada no elenco
+                </p>
               </div>
             </div>
             <div className="flex gap-4 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto relative z-10 px-2">
@@ -585,11 +760,11 @@ const FMAnalyzer = () => {
                   key={rec.name}
                   onClick={() => setFormation(rec.name)}
                   className={`flex flex-col items-center p-4 rounded-xl border min-w-[140px] transition-all hover:scale-105 group/btn ${formation === rec.name
-                    ? 'bg-blue-600 border-blue-400 shadow-lg shadow-blue-900/50 ring-2 ring-white/20'
+                    ? (tacticalPhase === 'ip' ? 'bg-blue-600 border-blue-400 shadow-lg shadow-blue-900/50 ring-2 ring-white/20' : 'bg-red-600 border-red-400 shadow-lg shadow-red-900/50 ring-2 ring-white/20')
                     : 'bg-black/40 border-white/5 hover:bg-black/60 hover:border-white/20'
                     }`}
                 >
-                  <span className={`text-[10px] font-bold uppercase tracking-widest mb-1 ${formation === rec.name ? 'text-blue-100' : 'text-slate-400'}`}>{idx + 1}º Melhor</span>
+                  <span className={`text-[10px] font-bold uppercase tracking-widest mb-1 ${formation === rec.name ? 'text-white' : 'text-slate-400'}`}>{idx + 1}º Melhor</span>
                   <div className="text-white font-black text-lg">{rec.name}</div>
                   <div className={`text-xs font-bold mt-1 px-2 py-0.5 rounded-full ${formation === rec.name ? 'bg-white/20 text-white' : 'bg-green-500/10 text-green-400'}`}>{rec.score.toFixed(1)} pts</div>
                 </button>
@@ -600,20 +775,41 @@ const FMAnalyzer = () => {
 
         <div className="lg:col-span-2 relative bg-slate-900/80 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/10 shadow-2xl h-[750px]">
           {/* Campo Tático */}
-          <div className="absolute inset-0 bg-[#0f2e1a]/80">
+          <div className={`absolute inset-0 transition-colors duration-500 ${tacticalPhase === 'ip' ? 'bg-[#0f2e1a]/80' : 'bg-[#1a0f0f]/80'}`}>
             {/* Gramado Stripes */}
             <div className="absolute inset-0" style={{ backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 49px, rgba(255,255,255,0.03) 50px)' }}></div>
             {/* Linhas do Campo */}
             <div className="absolute top-4 bottom-4 left-4 right-4 border-2 border-white/20 rounded-lg"></div>
             <div className="absolute top-0 bottom-0 left-1/2 w-0.5 bg-white/20 transform -translate-x-1/2"></div>
-            <div className="absolute top-1/2 left-1/2 w-36 h-36 border-2 border-white/20 rounded-full transform -translate-x-1/2 -translate-y-1/2 bg-[#0f2e1a]/20 backdrop-blur-sm flex items-center justify-center">
+            <div className="absolute top-1/2 left-1/2 w-36 h-36 border-2 border-white/20 rounded-full transform -translate-x-1/2 -translate-y-1/2 bg-white/5 backdrop-blur-sm flex items-center justify-center">
               <div className="w-2 h-2 bg-white/40 rounded-full"></div>
             </div>
+            
+            {/* Phase Indicator on Pitch */}
+            <div className="absolute top-8 right-8 text-white/10 font-black text-6xl uppercase pointer-events-none select-none">
+                {tacticalPhase === 'ip' ? 'ATK' : 'DEF'}
+            </div>
+
             <div className="absolute top-[15%] left-1/2 w-[60%] h-px bg-white/10 transform -translate-x-1/2 border-dashed border-t"></div>
             <div className="absolute bottom-[15%] left-1/2 w-[60%] h-px bg-white/10 transform -translate-x-1/2 border-dashed border-t"></div>
           </div>
 
-          {lineup.map((slot) => (
+          {lineup.map((slot) => {
+             let displayScore = 0;
+             let roleName = slot.role;
+             
+             if (slot.main) {
+                 if (tacticalPhase === 'ip' && slot.ipRole && slot.main.fm26Scores.ip[slot.ipRole]) {
+                     displayScore = slot.main.fm26Scores.ip[slot.ipRole];
+                     roleName = slot.ipRole; // Show FM26 Role name on hover? Maybe too long. Keep generic role.
+                 } else if (tacticalPhase === 'oop' && slot.oopRole && slot.main.fm26Scores.oop[slot.oopRole]) {
+                     displayScore = slot.main.fm26Scores.oop[slot.oopRole];
+                 } else {
+                     displayScore = slot.main.mainScore;
+                 }
+             }
+
+             return (
             <div
               key={slot.id}
               className="absolute transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-36 group z-10 hover:z-50"
@@ -624,14 +820,14 @@ const FMAnalyzer = () => {
               {slot.main ? (
                 <div
                   onClick={() => handleOpenPlayerModal(slot.main)}
-                  className="bg-slate-900/90 backdrop-blur-md border border-white/10 rounded-xl p-2 text-center w-full shadow-xl cursor-pointer hover:border-blue-500 hover:bg-blue-900/40 transition-all hover:scale-110 hover:shadow-blue-900/30 group-hover:ring-2 group-hover:ring-blue-500/50"
+                  className={`bg-slate-900/90 backdrop-blur-md border border-white/10 rounded-xl p-2 text-center w-full shadow-xl cursor-pointer hover:bg-slate-800 transition-all hover:scale-110 group-hover:ring-2 ${tacticalPhase === 'ip' ? 'hover:border-blue-500 hover:shadow-blue-900/30 group-hover:ring-blue-500/50' : 'hover:border-red-500 hover:shadow-red-900/30 group-hover:ring-red-500/50'}`}
                 >
                   <div className="flex items-center justify-center gap-2 mb-1">
-                    <span className={`w-2 h-2 rounded-full ${slot.main.mainScore >= 14 ? 'bg-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.8)]' : slot.main.mainScore >= 12.5 ? 'bg-green-400' : 'bg-slate-500'}`}></span>
+                    <span className={`w-2 h-2 rounded-full ${displayScore >= 14 ? 'bg-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.8)]' : displayScore >= 12.5 ? 'bg-green-400' : 'bg-slate-500'}`}></span>
                     <div className="text-white font-bold text-xs truncate max-w-[90px]">{slot.main.name.split(' ').pop()}</div>
                   </div>
                   <div className="bg-black/40 rounded px-2 py-0.5 inline-block border border-white/5">
-                    <span className="text-blue-400 text-xs font-black">{slot.main.mainScore.toFixed(1)}</span>
+                    <span className={`${tacticalPhase === 'ip' ? 'text-blue-400' : 'text-red-400'} text-xs font-black`}>{displayScore.toFixed(1)}</span>
                   </div>
 
                   {/* Tooltip Hover */}
@@ -640,13 +836,17 @@ const FMAnalyzer = () => {
                     {slot.backup && (
                       <div className="flex justify-between text-xs items-center mb-2 hover:bg-white/5 p-1.5 rounded transition-colors cursor-pointer" onClick={(e) => { e.stopPropagation(); if (slot.backup) handleOpenPlayerModal(slot.backup); }}>
                         <span className="text-white font-medium">{slot.backup.name}</span>
-                        <span className="text-slate-400 font-bold bg-slate-800 px-1.5 rounded">{slot.backup.mainScore.toFixed(1)}</span>
+                        <span className="text-slate-400 font-bold bg-slate-800 px-1.5 rounded">
+                            {(tacticalPhase === 'ip' && slot.ipRole && slot.backup.fm26Scores.ip[slot.ipRole] ? slot.backup.fm26Scores.ip[slot.ipRole] : (tacticalPhase === 'oop' && slot.oopRole && slot.backup.fm26Scores.oop[slot.oopRole] ? slot.backup.fm26Scores.oop[slot.oopRole] : slot.backup.mainScore)).toFixed(1)}
+                        </span>
                       </div>
                     )}
                     {slot.prospect && (
                       <div className="flex justify-between text-xs items-center mt-2 pt-2 border-t border-white/5 hover:bg-white/5 p-1.5 rounded transition-colors cursor-pointer" onClick={(e) => { e.stopPropagation(); if (slot.prospect) handleOpenPlayerModal(slot.prospect); }}>
                         <span className="text-purple-400 font-bold flex items-center gap-1"><TrendingUp size={10} /> {slot.prospect.name}</span>
-                        <span className="text-purple-300 font-bold">{slot.prospect.mainScore.toFixed(1)}</span>
+                        <span className="text-purple-300 font-bold">
+                            {(tacticalPhase === 'ip' && slot.ipRole && slot.prospect.fm26Scores.ip[slot.ipRole] ? slot.prospect.fm26Scores.ip[slot.ipRole] : (tacticalPhase === 'oop' && slot.oopRole && slot.prospect.fm26Scores.oop[slot.oopRole] ? slot.prospect.fm26Scores.oop[slot.oopRole] : slot.prospect.mainScore)).toFixed(1)}
+                        </span>
                       </div>
                     )}
                     {!slot.backup && !slot.prospect && <span className="text-slate-500 text-[10px] italic">Sem substitutos diretos.</span>}
@@ -656,24 +856,48 @@ const FMAnalyzer = () => {
                 <div className="bg-red-500/20 backdrop-blur border border-red-500/30 p-2 rounded-lg text-red-200 text-xs font-bold w-full text-center">VAZIO</div>
               )}
             </div>
-          ))}
+          );
+          })}
         </div>
 
         <div className="space-y-6">
           <div className="bg-slate-900/60 backdrop-blur-md p-6 rounded-2xl border border-white/5 shadow-xl">
-            <h3 className="text-white font-black mb-4 flex items-center gap-2 text-sm uppercase tracking-widest border-l-4 border-blue-500 pl-3">Formação Ativa</h3>
+            <h3 className={`text-white font-black mb-4 flex items-center gap-2 text-sm uppercase tracking-widest border-l-4 ${tacticalPhase === 'ip' ? 'border-blue-500' : 'border-red-500'} pl-3`}>
+                Formação {tacticalPhase === 'ip' ? '(Com Bola)' : '(Sem Bola)'}
+            </h3>
             <div className="grid grid-cols-2 gap-3">
               {Object.keys(FORMATIONS).map(fmt => (
                 <button
                   key={fmt}
                   onClick={() => setFormation(fmt)}
                   className={`p-3 rounded-lg text-xs font-bold transition-all border ${formation === fmt
-                    ? 'bg-blue-600 text-white border-blue-400 shadow-md shadow-blue-900/20'
+                    ? (tacticalPhase === 'ip' ? 'bg-blue-600 text-white border-blue-400 shadow-md shadow-blue-900/20' : 'bg-red-600 text-white border-red-400 shadow-md shadow-red-900/20')
                     : 'bg-black/20 text-slate-400 border-transparent hover:bg-black/40 hover:text-white hover:border-white/10'}`}
                 >
                   {fmt}
                 </button>
               ))}
+            </div>
+          </div>
+
+          {/* FM26 Instructions Panel */}
+          <div className="bg-slate-900/60 backdrop-blur-md p-6 rounded-2xl border border-white/5 shadow-xl">
+            <h3 className="text-white font-black mb-4 flex items-center gap-2 text-sm uppercase tracking-widest border-l-4 border-purple-500 pl-3">
+                Instruções {tacticalPhase === 'ip' ? 'Ofensivas' : 'Defensivas'} (FM26)
+            </h3>
+            <div className="space-y-4">
+                {Object.entries(tacticalPhase === 'ip' ? FM26_INSTRUCTIONS.ip : FM26_INSTRUCTIONS.oop).map(([category, items]) => (
+                    <div key={category} className="space-y-2">
+                        <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{category}</div>
+                        <div className="flex flex-wrap gap-2">
+                            {items.map(item => (
+                                <div key={item} className="px-2 py-1 bg-black/30 rounded border border-white/5 text-[10px] text-slate-300 font-medium hover:bg-white/5 cursor-pointer transition-colors">
+                                    {item}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                ))}
             </div>
           </div>
 
@@ -1016,8 +1240,8 @@ const FMAnalyzer = () => {
     };
 
     return (
-      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100] p-6 transition-all animate-in fade-in zoom-in-95 duration-200" onClick={() => setShowPlayerModal(false)}>
-        <div className="bg-slate-900/95 w-full max-w-5xl h-[85vh] rounded-2xl border border-white/10 shadow-2xl flex flex-col backdrop-blur-xl overflow-hidden relative" onClick={(e) => e.stopPropagation()}>
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-start justify-center z-[100] p-6 pt-20 transition-all animate-in fade-in zoom-in-95 duration-200" onClick={() => setShowPlayerModal(false)}>
+        <div className="bg-slate-900/95 w-full max-w-5xl max-h-[85vh] rounded-2xl border border-white/10 shadow-2xl flex flex-col backdrop-blur-xl overflow-hidden relative" onClick={(e) => e.stopPropagation()}>
 
           {/* HEADER */}
           <div className="p-6 border-b border-white/5 bg-white/5 flex justify-between items-start">
@@ -1112,21 +1336,49 @@ const FMAnalyzer = () => {
                       </div>
                     </div>
 
-                    {/* Metodologias */}
+                    {/* FM26 Roles Analysis */}
                     <div>
-                      <h4 className="text-white font-bold mb-4 flex items-center gap-2 text-sm uppercase tracking-widest border-l-4 border-blue-500 pl-3">Estilo de Jogo (DNA)</h4>
-                      <div className="space-y-3">
-                        {Object.entries(p.scores).filter(([key]) => key !== 'gk').sort((a, b) => b[1] - a[1]).slice(0, 3).map(([key, value]) => (
-                          <div key={key} className="bg-white/5 p-3 px-4 rounded-lg flex justify-between items-center border border-white/5">
-                            <span className="text-slate-300 text-xs font-bold uppercase tracking-wider">{key}</span>
-                            <div className="flex items-center gap-3">
-                              <div className="w-32 bg-black/40 rounded-full h-1.5">
-                                <div className="bg-blue-500 h-1.5 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]" style={{ width: `${(value / 20) * 100}%` }}></div>
-                              </div>
-                              <span className="text-white font-bold text-xs w-8 text-right">{value.toFixed(1)}</span>
+                      <h4 className="text-white font-bold mb-4 flex items-center gap-2 text-sm uppercase tracking-widest border-l-4 border-blue-500 pl-3">Melhores Funções (FM26)</h4>
+                      
+                      <div className="space-y-4">
+                        {/* IP Role */}
+                        <div className="bg-blue-900/10 border border-blue-500/20 p-3 rounded-xl">
+                           <div className="flex justify-between items-center mb-2">
+                              <span className="text-blue-300 text-[10px] font-black uppercase tracking-widest flex items-center gap-2"><Activity size={12}/> Com a Posse (IP)</span>
+                              <span className="text-white font-bold text-lg">{p.bestIPRole}</span>
+                           </div>
+                           <div className="w-full bg-black/40 rounded-full h-2 mb-1">
+                              {/* @ts-ignore */}
+                              <div className="bg-blue-500 h-2 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]" style={{ width: `${(p.fm26Scores.ip[p.bestIPRole] / 20) * 100}%` }}></div>
+                           </div>
+                           <div className="text-right text-[10px] text-slate-400 font-bold">Nota: {(p.fm26Scores.ip[p.bestIPRole] || 0).toFixed(1)}</div>
+                        </div>
+
+                        {/* OOP Role */}
+                        <div className="bg-red-900/10 border border-red-500/20 p-3 rounded-xl">
+                           <div className="flex justify-between items-center mb-2">
+                              <span className="text-red-300 text-[10px] font-black uppercase tracking-widest flex items-center gap-2"><Shield size={12}/> Sem a Posse (OOP)</span>
+                              <span className="text-white font-bold text-lg">{p.bestOOPRole}</span>
+                           </div>
+                           <div className="w-full bg-black/40 rounded-full h-2 mb-1">
+                              {/* @ts-ignore */}
+                              <div className="bg-red-500 h-2 rounded-full shadow-[0_0_10px_rgba(239,68,68,0.5)]" style={{ width: `${(p.fm26Scores.oop[p.bestOOPRole] / 20) * 100}%` }}></div>
+                           </div>
+                           <div className="text-right text-[10px] text-slate-400 font-bold">Nota: {(p.fm26Scores.oop[p.bestOOPRole] || 0).toFixed(1)}</div>
+                        </div>
+                      </div>
+
+                      {/* Legacy DNA (Collapsed/Smaller) */}
+                      <div className="mt-6 pt-4 border-t border-white/5 opacity-60 hover:opacity-100 transition-opacity">
+                        <h5 className="text-slate-500 font-bold mb-3 text-[10px] uppercase tracking-widest">DNA Tático (Legado)</h5>
+                        <div className="space-y-2">
+                          {Object.entries(p.scores).filter(([key]) => key !== 'gk').sort((a, b) => b[1] - a[1]).slice(0, 3).map(([key, value]) => (
+                            <div key={key} className="flex justify-between items-center">
+                              <span className="text-slate-400 text-[10px] font-bold uppercase tracking-wider">{key}</span>
+                              <span className="text-slate-300 font-bold text-[10px]">{value.toFixed(1)}</span>
                             </div>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>

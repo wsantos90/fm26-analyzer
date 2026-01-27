@@ -1,0 +1,414 @@
+Funções de Jogadores do Football Manager 2026: Guia Completo | FM Scout
+Guias do Football Manager - Papéis de Jogadores do FM26: O que há de novo, mudado e removido
+ATUALIZADO: 12 de outubro de 2025
+Este artigo foi atualizado com informações confirmadas sobre o cargo de FM26 antes do lançamento de 4 de novembro (Acesso Antecipado por volta de 21 de outubro). Adicionamos análises abrangentes do revolucionário sistema Em Posse/Fora de Posse e um guia completo de conversão FM24→FM26 para ajudar você a adaptar suas táticas.
+
+Revisão Tática ou Revisão Terminológica?
+Football Manager 2026 pode muito bem se mostrar a versão mais inovadora taticamente até hoje. Graças a um vazamento encontrado por Smiteras e compartilhado nos Fóruns Interativos de Esportes (o post de alguma forma desapareceu 2 dias depois), agora podemos ver o que poderiam ser papéis de jogadores completamente reinventados.
+
+FM26 não é só ajustar táticas, é virar todo o playbook. Se o vazamento for verdade, teremos um playground tático como nunca antes. Se você passou mais horas do que gostaria de admitir ajustando os papéis em FM, esse novo conjunto de instruções para jogadores teria que ser como a manhã de Natal.
+
+	
+Pré-compra FM26 na FM Scout
+Comece a jogar 2 semanas antes com acesso avançado e participe de um sorteio especial para 5 chances de ganhar GS26g.
+
+Seja uma reescrita completa ou uma reformulação inteligente, uma coisa é certa: suas táticas estão prestes a sofrer uma grande reviravolta. Bem, pode ser um pouco dos dois, na verdade; Reconfigurando o sistema de funções, mas também simplificando-o para clareza e integração. De qualquer forma, é bem empolgante.
+
+O Vazamento: Confirmado
+Em agosto, um arquivo oculto de tradução FMDB vazou mais de 40 novas vagas para FM26. O vazamento foi genuíno – e a realidade é ainda maior. Com o sistema de Posse/Fora de Posse agora confirmado, a reformulação tática do FM26 vai muito além de uma simples renomeação de papéis.
+
+
+Entendendo o Sistema de Posse/Fora de Posse
+Football Manager 26 introduz a reformulação tática mais significativa da história da série: a separação dos papéis dos jogadores em fases de Posse de Bola (IP) e Fora de Posse (OOP).
+
+Isso não é apenas uma mudança cosmética. Isso transforma fundamentalmente a forma como você constrói táticas ao reconhecer o que o futebol moderno sabe há anos: os jogadores desempenham papéis diferentes dependendo de seu time ter a posse de bola.
+
+Como Funciona
+Todo jogador de campo agora tem DUAS escolhas de função:
+Na Função de Posse: O que seu jogador faz quando seu time está com a bola (atacar, criar, posicionar para construir a bola)
+
+Papel fora da posse de bola: O que seu jogador faz quando o adversário está com a bola (pressionando, cobrindo espaço, forma defensiva)
+
+Por que isso importa
+Anteriormente, os papéis de FM tentavam comprimir ambas as fases em uma única seleção com modificadores de dever (Defender/Support/Attack). Isso frequentemente levava a compromissos. Quer um fullback ofensivo que também recue? Você tinha que escolher entre Lateral (Ataque) ou Lateral com instruções.
+
+Agora, você pode ter um Full-Back (IP) que se sobrepõe e cria chances, combinado com um Full-Back Pressing (OOP) que engaja agressivamente os adversários no alto do campo. Ou manter o mesmo Full-Back (IP), mas combiná-lo com Full-Back Holding (OOP) para uma abordagem defensiva mais conservadora.
+
+A Mudança Chave no Pensamento
+Funções criativas do FM24 (playmakers, funções ofensivas) → Agora papéis principalmente de IP
+
+Deveres defensivos do FM24 (rastreamento de volta, pressão) → Agora funções OOP
+
+Funções de suporte do FM24 → Frequentemente divididas entre funções de IP balanceado e Tracking OOP
+
+Tarefas de ataque do FM24 → Frequentemente se tornam funções de OOP em Outlet (mantenha-se alto para os counters)
+Esse sistema oferece controle detalhado sobre cada fase do jogo sem precisar de dezenas de instruções para o jogador. É mais próximo de como os verdadeiros gerentes pensam sobre táticas.
+
+
+Guia de Papéis de Jogadores do FM26
+O Football Manager 2026 está reformulando o manual tático. Com o arquivo vazado, agora podemos ver descrições detalhadas de cada papel no jogo, algumas das quais são novas no playbook.
+
+Não importa se você quer pressionar, defender ou construir, FM26 oferece mais ferramentas do que nunca para construir sistemas que abraçam a fluidez e sofisticação do futebol americano moderno. Isso te dá a liberdade de construir sistemas que sejam atacantes, reativos ou totalmente não convencionais.
+
+Ou pelo menos em teoria; Resta saber quando o jogo for lançado.
+
+Neste artigo, estou dividindo as informações de forma mais intuitiva, usando uma breve descrição e uma indicação de se a vaga é nova ou não. Seguido de insights táticos, comparações de papéis e quais combos seriam divertidos de tentar quando FM26 for lançado.
+
+Vamos direitinho!
+
+Funções de goleiro na FM 26
+Função	Descrição	Novo?
+Goleiro	Função equilibrada, distribui de acordo com a estratégia da equipe	Não
+Guardião de Linha	Permanece na área, evita jogadas de campo além da área	✓ Sim
+GK Direto	Joga seguro, evita passes arriscados	✓ Sim
+Guardião Varredor	Intercepta e desafia ativamente atacantes	Não
+Goleiro jogador de bola	Engaja-se em jogos de construção e joga como um jogador de campo	Não
+Insight Tático: A introdução do Guarda-Goleiro Segurador de Linha e do Goleiro Direto agora oferece soluções mais conservadoras para times que querem que seu goleiro permaneça firme e gaste menos tempo distribuindo riscos. O goleiro que joga a bola, porém, agora é ainda mais definido em seu papel de arma tática na construção prévia.
+
+Funções de Defensor Central na FM2026
+Função	Descrição	Novo?
+Defensor Central	Defensor equilibrado que ajuda a ganhar posse de bola	Não
+CB direto	Elimina perigo, evita passes arriscados	Não
+Cobrindo CB	Segura a linha, reage aos atacantes	Não
+Stop CB	Avança para desafiar atacantes cedo	Não
+CB jogador de bola	Envia passes que quebram a linha e avança a bola	Não
+CB sobreposto	Junta-se ao ataque, sobrepõe-se a áreas amplas	Não
+Pontuação Avançada de Defesa Ofensiva	Assume o papel de DM na construção	✓ Sim
+Wide CB	Oferece opções de largura e reciclagem	Não
+Cobrindo o Wide CB	Segura a linha, posicionamento cauteloso	Não
+Stop Wide CB	Desafia atacantes cedo, agressivo	Não
+
+Mostrar mais
+Insight Tático: O zagueiro central avançado muda o jogo. Ele mistura o estilo Líbero com a fluidez posicional moderna, permitindo que os defensores entrem no meio-campo durante a construção do campo. Combine com um Full-Back Invertido para cobertura e você tem um sistema tático que imita configurações de elite como o City de Guardiola ou o Brighton de De Zerbi.
+
+Funções de Full-Back na FM 2026
+Função	Descrição	Novo?
+Lateral	Função equilibrada, apoia ataques com sobreposições	Não
+Lateral Defensor Defensivo	Fica mais fundo enquanto a equipe pressiona	✓ Sim
+Lateral Interior	Escondido atrás da linha central para construção	✓ Sim
+Lateral Invertido	Sobe para apoiar o meio-campo	Não
+Pressionando como Lateral	Apoia o campo alto e auxilia a pressão	✓ Sim
+Insight Tático: Lateral Interior e Lateral Invertido têm ações quase idênticas, possivelmente alteradas dependendo da formação ou instrução. O Full-Back Pressing oferece um novo nível nos sistemas de pressão alta e joga quase como um ponta defensivo.
+
+Papéis de Ala na FM26
+Função	Descrição	Novo?
+Lateral de ponta	Combina funções de lateral e ponta; sobrepõe-se e apoia ataques	Não
+Defesa Lateral	Fica mais fundo enquanto a equipe pressiona; ocupa um pouco da linha de trás	✓ Sim
+Lateral Interior	Alterna entre o pivô para apoiar o passe e contra-defender	✓ Sim
+Lateral Invertido	Semelhante ao Inside WB; Joga como um meio-campista defensivo	Não
+Pressionando o Lateral Lateral	Pressiona os jogadores para a linha alta no campo; suporta sistemas de prensagem	✓ Sim
+Ala Criador de Jogadas	Centro central do jogo aéreo; cria chances de ataque com passes em profundidade e cruzamentos	✓ Sim
+Lateral Avançado	Molas altas e largas; Joga como um meio-campista aberto	✓ Sim
+
+Mostrar mais
+Insight Tático: Os defensores recuados e os centrais de defesa se foram embora. Os novos papéis de Wing-Back trazem uma flexibilidade como nunca antes. Pressione alto, dê a mão para dentro ou crie de fundo? Há um papel para cada sistema.
+
+FM 26 Funções de Meio-Campo Defensivo
+Função	Descrição	Novo?
+Meio-Campo Defensivo	Shields, defesa e cordas jogam junto com passes simples	Não
+Deixando o DM	Volta para a linha de trás quando está sob pressão	✓ Sim
+DM de triagem	Fica na zona central, cortando as faixas de ultrapassagem	✓ Sim
+DM de cobertura ampla	Abre a posição para ajudar os laterais	✓ Sim
+Half-Back	Quedas entre CBs durante a construção	Não
+Pressionando DM	Avança para pressionar alto	✓ Sim
+Criador de Jogo Profundo	Começa ataques profundos com passes precisos	Não
+Insight Tático: O DM Dropping e o Half-Back formam a mesma cobertura defensiva, mas uma é ativada durante a pressão, enquanto a outra inicia a construção. O melhor caso para o DM com cobertura ampla serão formações assimétricas ou defesa de laterais ofensivos.
+
+Funções no Meio-Campo Central FM2026
+Função	Descrição	Novo?
+Meio-campista central	Função equilibrada, apoia tanto a defesa quanto o ataque	Não
+CM de Seleção	Bloqueia a zona central, corta as rotas de ultrapassagem	✓ Sim
+CM de cobertura larga	Sai para proteger as laterais	✓ Sim
+Meio-campista box-to-box	Cobre todo o campo, chega tarde no ataque	Não
+Criador de Jogo Box-to-Box	Presença criativa, mergulha fundo e avança	✓ Sim
+Meio-campista do Canal	Faz com que a sobreposição passe em canais largos	✓ Sim
+Meio-campista	Vínculo criativo, troca para o cargo de AM	✓ Sim
+CM de Prensagem	Passos para pressionar alto	✓ Sim
+Insight Tático: O Box-to-Box Playmaker é um Roaming Playmaker reembalado, pois também possui criatividade para gerar profundidade junto com uma faísca no terço final. O Meio-campista do Canal é o melhor para atuar com atacantes interiores ou laterais sobrepostos, enquanto o Organizador de Jogo Avançado e Avançado em um único papel híbrido.
+
+Funções de Meio-Campo Amplo FM 2026
+Função	Descrição	Novo?
+Meio-campista aberto	Joga mais recuado, cruza de fora	Não
+Acompanhando o meio-campista largo	Desce fundo para defender	✓ Sim
+Meio-campista central largo	Atua na faixa no trio do meio-campo, ajuda na construção	✓ Sim
+Meio-campista de Wide Outlet	Mantém-se alto enquanto evita deveres defensivos	✓ Sim
+Insight Tático: O Meio-campista de Saída Larga é uma ferramenta de contra-ataque; Perfeito para táticas baseadas em transições rápidas. O Meio-campista Lateral Rastreador oferece estabilidade defensiva nas pontas, ideal para defender contra sobrecargas.
+
+Funções de Meio-Atacante FM26
+Função	Descrição	Novo?
+Meio-campista ofensivo	Trabalha entre linhas, cria espaço	Não
+Rastreamento AM	Abaixa fundo para ajudar na defesa	✓ Sim
+Criador de Jogadas Avançado	Cria em áreas centrais altas	Não
+Central Canal AM	Permanece alto enquanto evita funções defensivas	✓ Sim
+Divisão da Estação AM	Permanece alto e vai para longe para contra-ataques	✓ Sim
+Papel Livre	Vagueia criativamente, perturba a forma	✓ Sim
+Insight Tático: O Papel Livre é um pouco semelhante ao Enganche e ao Trequartista, pois concede total liberdade criativa. Splitting Outlet AM é uma variante de contra-ataque ampla, mais adequada para táticas assimétricas ou aproveitamento das flancas.
+
+Funções de Ponta FM 26
+Função	Descrição	Novo?
+Ponta	Estica o jogo, cruza	Não
+Ponta Meio-Espaço	Avança para dentro com os laterais sobrepostos	✓ Sim
+Ponta interior	Semelhante ao Half-Space Winger, movimento central	✓ Sim
+Asa de saída inversora	Permanece alto, se move para dentro para contra-ataques	✓ Sim
+Ponta de Tracking	Afunda para cobertura defensiva	✓ Sim
+Ala de saída larga	Permanece alto, não se defende	✓ Sim
+Organizador de Defesa Largo	Começa largo, desliza para dentro para criar	✓ Sim
+Atacante aberto	Atacante aberto fazendo corridas para dentro da área	✓ Sim
+Atacante Interior	Cortes internos para atacar espaços centrais	Não
+Insight Tático: O Wide Playmaker é uma nova solução para expressar criatividade nas áreas abertas, enquanto o Atacante Lateral ameaça o gol de áreas abertas. Half-Space Winger e Inside Winger são bastante semelhantes, mas podem diferir em presets táticos ou animações.
+
+Funções de Atacante em FM2026
+Função	Descrição	Novo?
+Falso Nove	Drops profundos, cria espaço e chances	Não
+Avançado Profundo	Conecta meio-campo e ataque, distribui o jogo	Não
+Meio Espaço Avançado	Atacante aberto que corta para marcar	✓ Sim
+Segundo Atacante	Salta no espaço cedo, corre para marcar	✓ Sim
+Encaminhamento por canal	Corredor de alta energia em canais largos	✓ Sim
+Centroavante	Classic nº 9, lidera a linha	Não
+Central Outlet CF	Permanece alto, evita trabalho defensivo	✓ Sim
+Saída de divisão CF	Permanece alto e desvia para longe para contra-ataques	✓ Sim
+Rastreamento CF	Desce para ajudar na defesa	✓ Sim
+Alvo Avançado	Presença física, ameaça aérea	Não
+Caçador furtivo	Permanece no centro, busca marcar	Não
+
+Mostrar mais
+Insight Tático: Channel Forward e Half-Space Forward seriam inestimáveis para formações de ataque assimétricas ou fluidas. Não importa o que você prefira, os novos papéis de atacante oferecem precisão tática e possibilidades narrativas.
+
+
+FM24 → FM26 Mapeamento de Funções & Novas Opções
+A divisão IP/OOP significa que muitos papéis do FM24 foram transformados ou divididos em versões específicas por fase. Aqui está sua referência rápida do que mudou em cada cargo, incluindo cargos totalmente novos que não existiam no FM24.
+
+Goleiros
+Funções no FM24:
+Goleiro (Defende) → Goleiro + Goleiro
+Guardião Varredor (todas as funções) → Guardião Varredor + Guardião Varredor
+Novidades no FM26:
+Guardião de Linha (permanece na caixa, varrimento mínimo)
+Goleiro Direto (distribuição de segurança em primeiro lugar)
+Goleiro com bola (participa ativamente da construção de jogo)
+
+Defensores Centrais
+Funções no FM24:
+Defensor Central (Defender) → Defensor Central + Defensor Central
+Defensor Jogador de Bola → Defensor Defensor Jogador de Bola + Defensor Defensivo Cobertor
+Zagueiro Direto → Defensor Sem Afincadação + Defensor Sem Afinidade
+Líbero → Sobreposição CB/Avançado CB + Cobertura CB
+Novidades no FM26:
+Defesa defensiva avançada (faz transição para DM durante a construção)
+CB sobreposto (junta ataques em áreas amplas)
+Variações de CB largo (Covering/Stopping)
+
+Laterais e Laterais
+Funções no FM24:
+Lateral (Defensor) → Lateral + Lateral
+Lateral (Apoio) → Lateral + Lateral Defensivo
+Lateral (Ataque) → Lateral + Lateral Pressionante
+Lateral (Defensor) → Lateral + Lateral Defensivo
+Lateral (Suporte) → Lateral Lateral + Lateral Lateral Interior
+Lateral Lateral (Ataque) → Lateral Avançado + Lateral Defensivo Defensivo
+Lateral Invertido → Lateral Lateral Invertido/Lateral Interior + Lateral Interior Lateral Invertido
+Lateral Completo → Jogador Criador de Jogo Lateral + Lateral Interior
+Novidades no FM26:
+Lateral Interior (encaixa na linha do CB)
+Pressionando Full-Back (alto engajamento)
+Lateral Defensivo (fica mais recuado durante a pressão)
+Playmaking Wing-Back (centro criativo)
+Avançado de Ala (mantém-se alto e largo)
+
+Meio-campistas defensivos
+Funções no FM24:
+Meio-campista Defensivo (Defender) → Meio-campista Defensivo + DM de Proteção
+Âncora → Meio-campista Defensivo + Defensive DM de proteção
+Meia-Defesa → Meia-Lateral + Meia-Defensora
+Meio-campista vencedor → Defensive Fielder + DM pressionador
+Criador de Jogo Defensivo (Defensa) → Criador de Jogo Profundo + DM de Proteção
+Criador de Jogadas Profundas (Suporte) → Criador de Jogadas Profundas + DM de Escrúpulo/Defensive Defensivo Wide Cover
+Segundo Volante → Criador de Jogo Box-to-Box + DM Pressionador
+Novidades no FM26:
+Dropping DM (drops into backline under pressure)
+Screening DM (blocks passing lanes)
+Pressing DM (steps forward aggressively)
+Wide Covering DM (shifts wide to support fullbacks)
+
+Central Midfielders
+FM24 Roles:
+Central Midfielder (Defend) → Central Midfielder + Screening CM
+Central Midfielder (Support/Attack) → Central Midfielder + Box-to-Box Midfielder
+Box-to-Box Midfielder → Box-to-Box Midfielder + Box-to-Box Midfielder
+Advanced Playmaker → Midfield Playmaker/Advanced Playmaker + Tracking AM/Screening CM
+Mezzala → Channel Midfielder + Screening CM/Wide Covering CM
+Carrilero → Wide Covering CM + Wide Covering CM
+Roaming Playmaker → Midfield Playmaker/Box-to-Box Playmaker + Screening CM
+New in FM26:
+Box-to-Box Playmaker (creative B2B variant)
+Pressing CM (steps forward to press)
+Screening CM (holds central zone)
+Wide Covering CM (shuttles wide defensively)
+Channel Midfielder (direct runs into channels)
+Midfield Playmaker (creative link player)
+
+Attacking Midfielders
+FM24 Roles:
+Attacking Midfielder (Support/Attack) → Attacking Midfielder + Tracking AM
+Enganche → Advanced Playmaker/Free Role + Tracking AM
+Trequartista → Advanced Playmaker/Free Role + Tracking AM
+Shadow Striker → Attacking Midfielder/Second Striker + Tracking AM/Pressing CM
+New in FM26:
+Free Role (ultimate creative freedom)
+Tracking AM (drops deep defensively)
+Second Striker (goal-focused support striker)
+Central Outlet AM (stays high for counters)
+Splitting Outlet AM (stays high, drifts wide)
+
+Wingers
+FM24 Roles:
+Winger (Support/Attack) → Winger + Tracking Winger
+Inverted Winger → Inside Winger/Half-Space Winger + Tracking Winger
+Inside Forward → Inside Forward + Tracking Winger
+Wide Playmaker → Wide Playmaker/Playmaking Winger + Tracking Winger
+New in FM26:
+Inside Winger (cuts inside regularly)
+Half-Space Winger (operates in half-spaces)
+Wide Forward (wide attacker, box runs)
+Playmaking Winger (creates from wide)
+Wide Outlet Winger (stays high and wide)
+Inside Outlet Winger (stays high, drifts central)
+Tracking Winger (drops deep defensively)
+
+Strikers
+FM24 Roles:
+Advanced Forward → Centre Forward + Central Outlet CF
+Poacher → Poacher + Central Outlet CF
+Complete Forward → Centre Forward + Tracking CF/Central Outlet CF
+Target Man → Target Forward + Target Forward
+False Nine → False Nine + Tracking CF
+Deep-Lying Forward → Deep-Lying Forward + Tracking CF
+Pressing Forward → Centre Forward + Tracking CF
+New in FM26:
+Channel Forward (runs into wide channels)
+Half-Space Forward (drifts into half-spaces)
+Second Striker (drops early, pushes late)
+Splitting Outlet CF (stays high, drifts wide)
+Central Outlet CF (stays central and high)
+Tracking CF (drops deep defensively)
+
+Quick Conversion Principles
+Creative roles (playmakers, attacking duties) → Primarily IP roles now
+Defensive duties (tracking, pressing) → OOP roles
+Support duties → Often split into balanced IP + Tracking OOP
+Attack duties → Often become Outlet OOP (stay high for transitions)
+For a complete tactical conversion guide with detailed instructions, team shape considerations, and player instruction changes, check out our full article.
+
+
+What's Been Removed from FM24
+Football Manager 26 streamlines the role system by merging or removing several classic roles. Here's what's gone and where their functionality has moved:
+
+Removed Roles
+Mezzala → Replaced by Channel Midfielder
+The Mezzala's wide runs and off-ball movement are now captured by the Channel Midfielder, which makes more direct runs into channels rather than the Mezzala's roaming style.
+
+Segundo Volante → Fusão ao Playmaker Box-to-Box
+As corridas agressivas e impetuosas de longas distâncias agora são controladas combinando um Box-to-Box Playmaker (IP) com um DM Pressing (OOP).
+
+Enganche → absorvido pelo Mestre de Jogadas Avançado / Papel Livre
+O clássico #10, com total liberdade criativa, agora vive no Advanced Playmaker ou no novo Free Role, ambos oferecendo liberdade de roaming e criatividade semelhantes.
+
+Trequartista → fundido com Advanced Playmaker / Free Role
+Assim como o Enganche, o posicionamento criativo único do Trequartista agora é coberto por papéis mais flexíveis de playmaker com a opção de Papel Livre.
+
+Carrilero → renomeado para Wide Covering CM
+Isso não foi removido, apenas renomeado para maior clareza. A funcionalidade permanece idêntica: se deslocando para cobrir as zonas de fullback.
+
+Por que a consolidação?
+A Sports Interactive simplificou a sobreposição de papéis para reduzir a confusão, especialmente para novos jogadores.
+
+Em vez de ter cinco papéis diferentes de "meio-campista criativo" com diferenças sutis, o FM26 agrupa funções semelhantes e permite que você ajuste com combinações de IP/OOP.
+
+Para jogadores experientes, isso pode parecer uma perda de detalhe no começo. Mas o sistema IP/OOP na verdade te dá MAIS controle.
+
+Em vez de escolher entre "Mezzala" e "Meio-Box-to-Box", agora você pode criar o híbrido exato que deseja combinando Meio-campista do Canal (IP) com Meio-Campo Box-to-Box (OOP).
+
+Os papéis não desapareceram – evoluíram para um sistema mais flexível.
+
+
+FM 26 Comparações de Papéis e Insights Táticos
+Lateral interior vs Lateral Invertido: Funcionalmente é o mesmo, mas os papéis podem variar dependendo da formação ou das táticas de bola parada. Ambos jogam como meio-campistas defensivos, com o Inside WB mais passivo em sua abordagem, enquanto o Inverted WB é proativo no suporte durante a construção do jogo.
+
+Wing-back de criação de jogadas vs WB invertido: O wing-back de criação de jogadas é mais ofensivo e criativo, preocupado em iniciar ataques e entregar as bolas finais. É um papel muito intenso, tipo Trent Alexander-Arnold.
+
+Lateral Avançado vs Ala Clássico: O Ala Avançado não cai muito na construção do jogo. Em vez disso, eles permanecem altos e abertos para fornecer amplitude e intenção ofensiva desde o início; Exatamente o tipo de jogador que prosperaria em um sistema baseado em posse de bola ou assimétrico.
+
+Pressionar Lateral Lateral vs Pressionar Lateral: Ambos os papéis mantêm pressão alta e são igualmente aplicáveis na perspectiva da zona para trás, mas o Lateral Lateral supostamente é melhor para times de gegenpressing ou 3-4-3 de ataque.
+
+Falso Nove vs Atacante Recuado: Ambos caem para trás, mas o Falso Nove é criativo e difícil de marcar, enquanto o DLF conecta sistematicamente o jogo.
+
+Atacante de Meio-Espaço vs Atacante de Interior: O Atacante de Meio-Espaço geralmente começa de uma posição mais ampla e se move para dentro, tornando esse tipo de atacante perfeito para sistemas de laterais sobrepostos. Geralmente, uma versão mais orientada a objetivos do Inside Forward.
+
+Second Striker vs Trequartista: Second Striker is more direct and focused on scoring goals, while the Trequartista (now moved to being perhaps combined with Free Role AM) was passive and knew how to create.
+
+Channel Forward vs Poacher: Channel Forward is agile and disruptive, pressing wide areas. The Poacher, on its part, remains central and waits for opportunities.
+
+Outlet Roles (Central/Splitting) vs Tracking CF: Outlet roles prefer counter-attacking positioning, while the Tracking CF is better utilized to give defensive security; therefore, they would suit onto pressing ones.
+
+
+What Should You Try First?
+Some spicy combinations to try out upon FM26 release:
+
+3-4-3 with Advanced Wing-Backs + Overlapping CBs for flanking overloads, stretching opponents with unforgiving wide runs.
+
+4-2-3-1 with Playmaking Wing-Backs + Inside Wingers for the run-throughs of fullbacks as Inside Forwards cut in to finish centrally.
+
+5-3-2 with Holding Wing-Backs + Advanced CBs for sound defensive structure and smooth transition into midfield control.
+
+3-4-3 with Playmaking Wing-Back + Advanced CB for total football sensations.
+
+Pressing Fullback + Half-Space Winger to impose frantic pressure onto wide zones.
+
+4-3-3 with Box-to-Box Playmaker + Channel Midfielder for vertical mobility and wide overload through dynamic midfield runs.
+
+3-4-3 with Wide Covering DM + Wide Outlet Midfielder for balanced defensive coverage and forceful counter-attacks.
+
+4-2-3-1 with Midfield Playmaker + Pressing CM to maintain control of the center while making sure the opponent finds it tough to build-up.
+
+4-2-3-1 with Free Role AM + Wide Playmaker to feature breezy creativity from wide and central positions: suitable for possession-based systems.
+
+4-3-3 with Half-Space Winger + Overlapping Wing-Back for layered wide attacks through inside movement and overlapping runs.
+
+3-4-3 with Splitting Outlet AM + Wide Forward to attack flanks and stretch defenses with aggressive counter-attacking systems.
+
+4-4-2 with Channel Forward + Second Striker to stretch the defenses and take advantage of the space with relentless movement.
+
+4-2-3-1 with False Nine + Wide Forward to create space in the middle as wide players attack the box.
+
+3-4-3 with Splitting Outlet CF + Half-Space Forward to build a mobile front line that drifts, presses, and counters with precision.
+
+4-2-3-1 with Channel Forward + Free Role AM for chaos and creativity.
+
+
+What to Expect on Release Day
+With Early Access launching around October 21 and full release on November 4, here's what you should prepare for.
+
+Expect a Learning Curve
+Even veteran FM players will need time to adjust to IP/OOP thinking. Your first few tactics might feel awkward as you rewire your brain from single-role selections to phase-based thinking.
+
+Tip: Start simple. Use matching role names for IP and OOP (like Centre-Back/Centre-Back) and gradually experiment with splitting duties once you understand how phases interact.
+
+Your Old Tactics Won't Import Directly
+FM24 saves won't be compatible, and even if you manually recreate your tactics, they'll need translation. Use the conversion guide above, but be prepared to iterate and adjust.
+
+The Meta Will Shift
+Tactics that dominated FM24 might not work the same way in FM26. The IP/OOP system fundamentally changes pressing, defensive shape, and transition play. Expect the community to spend weeks discovering new exploits and optimal combinations.
+
+Experimentation Is King
+The beauty of FM26's system is flexibility. Don't be afraid to try wild combinations:
+Overlapping CB (IP) + Pressing Full-Back (OOP) for aggressive wing attacks
+Playmaking Wing-Back (IP) + Holding Wing-Back (OOP) for controlled buildup with defensive security
+Advanced Playmaker (IP) + Pressing CM (OOP) for creative chaos that disrupts opponents
+Football Manager 26 não está apenas pedindo para você aprender novos nomes de funções. É pedir para você pensar na tática como o futebol moderno realmente funciona: como duas fases distintas que exigem abordagens diferentes.
+
+E isso é incrivelmente empolgante.
+
+Obtenha acesso antecipado ao FM26
+
+Compre FM26 pela fmscout.com muito mais barato que a loja Steam e aproveite o acesso antecipado 2 semanas antes do lançamento! Tenha 5x chance de ganhar uma chave para a edição 'g' do Genie Scout 26 e nossa gratidão por apoiar financeiramente nossa comunidade.
+
