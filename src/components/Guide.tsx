@@ -8,6 +8,7 @@ import {
   Zap,
   Anchor,
   Eye,
+  Brain,
 } from 'lucide-react';
 
 const Guide: React.FC = () => {
@@ -207,6 +208,77 @@ const Guide: React.FC = () => {
                 <span>
                   <strong className="text-white">Técnico:</strong> Importante,
                   mas secundário se o jogador não tiver físico para competir.
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Sugestões Inteligentes de Treino (Novo) */}
+      <div className="bg-slate-900/60 backdrop-blur-md p-8 rounded-xl border border-white/5 shadow-xl">
+        <h3 className="text-white font-black mb-6 flex items-center gap-3 text-lg uppercase tracking-wider border-b border-white/5 pb-4">
+          <Brain size={24} className="text-yellow-500" />
+          Sugestões Inteligentes de Treino
+        </h3>
+        <p className="text-slate-300 leading-relaxed mb-6">
+          O sistema utiliza uma lógica avançada para sugerir focos de treino,
+          filtrando atributos universais irrelevantes para cada posição.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-black/20 p-5 rounded-xl border border-white/5">
+            <h4 className="text-yellow-400 font-bold mb-3 flex items-center gap-2">
+              <Zap size={18} />
+              Filtragem por Posição
+            </h4>
+            <p className="text-slate-400 text-sm leading-relaxed mb-3">
+              Atributos que não fazem sentido para a posição selecionada são
+              automaticamente excluídos das sugestões de treino.
+            </p>
+            <div className="bg-black/40 p-3 rounded-lg border border-white/5">
+              <div className="text-xs text-slate-500 uppercase font-bold mb-2">
+                Exemplos de Exclusão:
+              </div>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-center gap-2 text-slate-300">
+                  <span className="text-red-400 text-xs">✕</span>
+                  <span>
+                    <strong>Zagueiros/Goleiros:</strong> Não treinam "Drible"
+                  </span>
+                </li>
+                <li className="flex items-center gap-2 text-slate-300">
+                  <span className="text-red-400 text-xs">✕</span>
+                  <span>
+                    <strong>Atacantes:</strong> Não treinam "Posicionamento
+                    Defensivo"
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="bg-black/20 p-5 rounded-xl border border-white/5">
+            <h4 className="text-blue-400 font-bold mb-3 flex items-center gap-2">
+              <Target size={18} />
+              Mapeamento de Funções (Roles)
+            </h4>
+            <p className="text-slate-400 text-sm leading-relaxed mb-3">
+              Ao analisar um jogador, o sistema sugere apenas as funções táticas
+              válidas para a posição selecionada, divididas em fases de jogo.
+            </p>
+            <ul className="space-y-2 text-sm text-slate-300">
+              <li className="flex items-start gap-2">
+                <span className="text-blue-500">•</span>
+                <span>
+                  As 3 melhores funções são calculadas dinamicamente baseadas
+                  nos atributos do jogador.
+                </span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-blue-500">•</span>
+                <span>
+                  Respeita a separação <strong>IP (Com Bola)</strong> e{' '}
+                  <strong>OOP (Sem Bola)</strong> do FM26.
                 </span>
               </li>
             </ul>
