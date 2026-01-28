@@ -10,6 +10,7 @@ import {
   Legend,
 } from 'recharts';
 import { Player } from '../types';
+import { ATTRIBUTE_LIST, ATTRIBUTE_CATEGORIES } from '../constants';
 
 // Fix for Recharts TS error
 const RadarAny = Radar as any;
@@ -57,27 +58,12 @@ const CompareSidebar: React.FC<CompareSidebarProps> = ({
     }
   };
 
-  const compareAttributes = [
-    { name: 'Velocidade', key: 'pace' },
-    { name: 'Aceleração', key: 'acceleration' },
-    { name: 'Resistência', key: 'stamina' },
-    { name: 'Força', key: 'strength' },
-    { name: 'Equilíbrio', key: 'balance' },
-    { name: 'Agilidade', key: 'agility' },
-    { name: 'Pulo', key: 'jumping' },
-    { name: 'Trabalho', key: 'workRate' },
-    { name: 'Espírito', key: 'teamwork' },
-    { name: 'Agressão', key: 'aggression' },
-    { name: 'Decisões', key: 'decisions' },
-    { name: 'Visão', key: 'vision' },
-    { name: 'Passe', key: 'passing' },
-    { name: 'Drible', key: 'dribbling' },
-    { name: 'Finalização', key: 'finishing' },
-    { name: 'Cabeceio', key: 'heading' },
-    { name: 'Desarme', key: 'tackling' },
-    { name: 'Marcação', key: 'marking' },
-    { name: 'Posicionamento', key: 'positioning' },
-  ];
+  const compareAttributes = ATTRIBUTE_LIST.filter(
+    attr => attr.category !== ATTRIBUTE_CATEGORIES.GOALKEEPING
+  ).map(attr => ({
+    name: attr.label,
+    key: attr.key,
+  }));
 
   // Prepare data for Radar Chart
   const radarData = [

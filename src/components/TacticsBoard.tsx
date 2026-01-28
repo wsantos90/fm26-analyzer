@@ -2,6 +2,7 @@ import React from 'react';
 import { Shield, Users, Play, RotateCw, BarChart3, Trophy } from 'lucide-react';
 import { useTactics } from '../hooks/useTactics';
 import { Player } from '../types';
+import { TACTICAL_METHODOLOGIES } from '../constants';
 
 interface TacticsBoardProps {
   players: Player[];
@@ -246,21 +247,9 @@ const TacticsBoard: React.FC<TacticsBoardProps> = ({ players }) => {
               {Object.entries(balance).map(([key, value]) => (
                 <div key={key} className="flex items-center justify-between">
                   <span className="text-slate-400 text-xs capitalize">
-                    {key === 'gk'
-                      ? 'Goleiro'
-                      : key === 'stretching'
-                        ? 'Amplitude'
-                        : key === 'linking'
-                          ? 'Ligação'
-                          : key === 'dynamic'
-                            ? 'Dinâmica'
-                            : key === 'engaged'
-                              ? 'Combate'
-                              : key === 'tracking'
-                                ? 'Cobertura'
-                                : key === 'outlet'
-                                  ? 'Referência'
-                                  : key}
+                    {TACTICAL_METHODOLOGIES[
+                      key as keyof typeof TACTICAL_METHODOLOGIES
+                    ] || key}
                   </span>
                   <div className="flex items-center gap-2">
                     <div className="w-24 bg-slate-700 rounded-full h-2 overflow-hidden">

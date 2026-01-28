@@ -1,293 +1,167 @@
-export const POS_LABELS: Record<string, string> = {
-  gk: 'GOL',
-  dc: 'ZAG',
-  dl: 'LE',
-  dr: 'LD',
-  wbl: 'ALE',
-  wbr: 'ALD',
-  dmc: 'VOL',
-  mc: 'MEI',
-  ml: 'ME',
-  mr: 'MD',
-  amc: 'MAC',
-  aml: 'MAE',
-  amr: 'MAD',
-  st: 'ATA',
+// Single Source of Truth for Positions
+export const POSITIONS_CONFIG = {
+  GK: { id: 'GK', label: 'Goleiro', aliases: ['GOL'], short: 'gk' },
+  DC: { id: 'DC', label: 'Zagueiro', aliases: ['ZAG'], short: 'dc' },
+  DL: { id: 'DL', label: 'Lateral Esquerdo', aliases: ['LE'], short: 'dl' },
+  DR: { id: 'DR', label: 'Lateral Direito', aliases: ['LD'], short: 'dr' },
+  WBL: { id: 'WBL', label: 'Ala Esquerdo', aliases: ['ALE'], short: 'wbl' },
+  WBR: { id: 'WBR', label: 'Ala Direito', aliases: ['ALD'], short: 'wbr' },
+  DM: { id: 'DM', label: 'Volante', aliases: ['VOL', 'DMC'], short: 'dmc' },
+  MC: { id: 'MC', label: 'Meia Central', aliases: ['MEI'], short: 'mc' },
+  ML: { id: 'ML', label: 'Meia Esquerda', aliases: ['ME'], short: 'ml' },
+  MR: { id: 'MR', label: 'Meia Direita', aliases: ['MD'], short: 'mr' },
+  AML: { id: 'AML', label: 'Ponta Esquerda', aliases: ['MAE'], short: 'aml' },
+  AMR: { id: 'AMR', label: 'Ponta Direita', aliases: ['MAD'], short: 'amr' },
+  AMC: { id: 'AMC', label: 'Meia Atacante', aliases: ['MAC'], short: 'amc' },
+  ST: { id: 'ST', label: 'Atacante', aliases: ['ATA'], short: 'st' },
 };
 
-// FM26 ROLE DEFINITIONS (Pesos de Atributos)
-export const FM26_ROLES = {
-  // --- GOALKEEPER (GK) ---
-  gk: {
-    Goleiro: {
-      reflexes: 3,
-      handling: 3,
-      positioning: 3,
-      agility: 2,
-      aerial: 2,
-    },
-    'Guardião de Linha': {
-      reflexes: 4,
-      handling: 3,
-      oneOnOne: 3,
-      positioning: 3,
-      aerial: 2,
-    },
-    'GK Direto': {
-      reflexes: 3,
-      handling: 3,
-      kicking: 3,
-      positioning: 2,
-      concentration: 2,
-    },
-    'Guardião Varredor': {
-      reflexes: 3,
-      rushing: 3,
-      oneOnOne: 3,
-      anticipation: 3,
-      acceleration: 2,
-      passing: 2,
-    },
-    'Goleiro Jogador': {
-      reflexes: 3,
-      passing: 3,
-      vision: 3,
-      firstTouch: 2,
-      composure: 2,
-      throwing: 2,
-    },
+// Derived mappings for compatibility
+export const POS_LABELS: Record<string, string> = Object.values(
+  POSITIONS_CONFIG
+).reduce(
+  (acc, pos) => {
+    acc[pos.short] = pos.aliases[0];
+    return acc;
+  },
+  {} as Record<string, string>
+);
+
+export const POSITIONS_PT_BR: Record<string, string> = Object.values(
+  POSITIONS_CONFIG
+).reduce(
+  (acc, pos) => {
+    acc[pos.id] = pos.label;
+    return acc;
+  },
+  {} as Record<string, string>
+);
+
+export const PT_ALIAS_TO_ID: Record<string, string> = Object.values(
+  POSITIONS_CONFIG
+).reduce(
+  (acc, pos) => {
+    pos.aliases.forEach(alias => {
+      acc[alias] = pos.id;
+    });
+    return acc;
+  },
+  {} as Record<string, string>
+);
+
+// --- ATTRIBUTE DEFINITIONS ---
+export const ATTRIBUTE_CATEGORIES = {
+  PHYSICAL: 'Físico',
+  MENTAL: 'Mental',
+  TECHNICAL: 'Técnico',
+  GOALKEEPING: 'Goleiro',
+} as const;
+
+export const ATTRIBUTES_CONFIG = {
+  // Physical
+  acceleration: {
+    label: 'Aceleração',
+    category: ATTRIBUTE_CATEGORIES.PHYSICAL,
+  },
+  agility: { label: 'Agilidade', category: ATTRIBUTE_CATEGORIES.PHYSICAL },
+  balance: { label: 'Equilíbrio', category: ATTRIBUTE_CATEGORIES.PHYSICAL },
+  jumping: { label: 'Pulo', category: ATTRIBUTE_CATEGORIES.PHYSICAL },
+  pace: { label: 'Velocidade', category: ATTRIBUTE_CATEGORIES.PHYSICAL },
+  stamina: { label: 'Resistência', category: ATTRIBUTE_CATEGORIES.PHYSICAL },
+  strength: { label: 'Força', category: ATTRIBUTE_CATEGORIES.PHYSICAL },
+
+  // Mental
+  aggression: { label: 'Agressão', category: ATTRIBUTE_CATEGORIES.MENTAL },
+  anticipation: { label: 'Antecipação', category: ATTRIBUTE_CATEGORIES.MENTAL },
+  bravery: { label: 'Bravura', category: ATTRIBUTE_CATEGORIES.MENTAL },
+  composure: { label: 'Frieza', category: ATTRIBUTE_CATEGORIES.MENTAL },
+  concentration: {
+    label: 'Concentração',
+    category: ATTRIBUTE_CATEGORIES.MENTAL,
+  },
+  decisions: { label: 'Decisões', category: ATTRIBUTE_CATEGORIES.MENTAL },
+  determination: {
+    label: 'Determinação',
+    category: ATTRIBUTE_CATEGORIES.MENTAL,
+  },
+  flair: { label: 'Improviso', category: ATTRIBUTE_CATEGORIES.MENTAL },
+  offTheBall: { label: 'Sem Bola', category: ATTRIBUTE_CATEGORIES.MENTAL },
+  positioning: {
+    label: 'Posicionamento',
+    category: ATTRIBUTE_CATEGORIES.MENTAL,
+  },
+  teamwork: {
+    label: 'Trabalho em Equipe',
+    category: ATTRIBUTE_CATEGORIES.MENTAL,
+  },
+  vision: { label: 'Visão', category: ATTRIBUTE_CATEGORIES.MENTAL },
+  workRate: {
+    label: 'Índice de Trabalho',
+    category: ATTRIBUTE_CATEGORIES.MENTAL,
   },
 
-  // --- IN POSSESSION (IP) ---
-  ip: {
-    // Defensores
-    'Defesa com Bola': {
-      passing: 4,
-      vision: 3,
-      composure: 3,
-      technique: 2,
-      acceleration: 4,
-      pace: 4,
-    },
-    'Zagueiro Lateral': {
-      crossing: 3,
-      dribbling: 2,
-      pace: 5,
-      acceleration: 5,
-      positioning: 3,
-      agility: 4,
-    },
-    'Defesa Avançado': {
-      passing: 4,
-      vision: 3,
-      dribbling: 3,
-      composure: 3,
-      pace: 4,
-      acceleration: 4,
-    }, // Libero moderno
-    'Lateral Invertido': {
-      passing: 3,
-      vision: 3,
-      positioning: 4,
-      decisions: 3,
-      acceleration: 4,
-      agility: 3,
-    },
-    'Ala Armador': {
-      passing: 4,
-      vision: 4,
-      crossing: 3,
-      technique: 3,
-      agility: 4,
-      acceleration: 3,
-    },
-    'Ala Ofensivo': {
-      pace: 5,
-      acceleration: 5,
-      crossing: 4,
-      dribbling: 4,
-      agility: 4,
-    },
-
-    // Meio-Campo
-    'Construtor de Jogo Recuado': {
-      passing: 5,
-      vision: 4,
-      composure: 4,
-      firstTouch: 3,
-      agility: 3,
-      decisions: 3,
-    },
-    'Construtor Box-to-Box': {
-      stamina: 5,
-      workRate: 5,
-      passing: 3,
-      vision: 3,
-      pace: 4,
-      acceleration: 4,
-    },
-    'Meio-Campista de Canal': {
-      pace: 5,
-      acceleration: 5,
-      stamina: 4,
-      offTheBall: 4,
-      workRate: 4,
-    }, // Novo Mezzala
-    'Construtor de Jogo Avançado': {
-      passing: 4,
-      vision: 4,
-      technique: 3,
-      flair: 3,
-      agility: 4,
-      acceleration: 3,
-    },
-
-    // Alas/Meias Ofensivos
-    'Extremo Interior': {
-      dribbling: 4,
-      finishing: 3,
-      acceleration: 5,
-      pace: 5,
-      flair: 3,
-      agility: 4,
-    },
-    'Construtor de Jogo Aberto': {
-      passing: 5,
-      vision: 4,
-      crossing: 3,
-      technique: 3,
-      agility: 3,
-      composure: 3,
-    },
-    'Função Livre': {
-      flair: 5,
-      vision: 4,
-      passing: 4,
-      dribbling: 4,
-      agility: 4,
-      acceleration: 3,
-    }, // Novo Trequartista/Enganche
-
-    // Atacantes
-    'Falso Nove': {
-      vision: 4,
-      passing: 4,
-      dribbling: 3,
-      composure: 3,
-      acceleration: 4,
-      agility: 4,
-    },
-    'Avançado de Canal': {
-      pace: 5,
-      acceleration: 5,
-      offTheBall: 4,
-      workRate: 4,
-      finishing: 3,
-    },
-    'Avançado Alvo': {
-      strength: 5,
-      heading: 5,
-      balance: 4,
-      teamwork: 3,
-      jumping: 4,
-    },
+  // Technical
+  crossing: { label: 'Cruzamento', category: ATTRIBUTE_CATEGORIES.TECHNICAL },
+  dribbling: { label: 'Drible', category: ATTRIBUTE_CATEGORIES.TECHNICAL },
+  finishing: { label: 'Finalização', category: ATTRIBUTE_CATEGORIES.TECHNICAL },
+  firstTouch: {
+    label: 'Prim. Toque',
+    category: ATTRIBUTE_CATEGORIES.TECHNICAL,
   },
+  heading: { label: 'Cabeceio', category: ATTRIBUTE_CATEGORIES.TECHNICAL },
+  longShots: { label: 'Chute Longe', category: ATTRIBUTE_CATEGORIES.TECHNICAL },
+  marking: { label: 'Marcação', category: ATTRIBUTE_CATEGORIES.TECHNICAL },
+  passing: { label: 'Passe', category: ATTRIBUTE_CATEGORIES.TECHNICAL },
+  tackling: { label: 'Desarme', category: ATTRIBUTE_CATEGORIES.TECHNICAL },
+  technique: { label: 'Técnica', category: ATTRIBUTE_CATEGORIES.TECHNICAL },
 
-  // --- OUT OF POSSESSION (OOP) ---
-  oop: {
-    // Defensores
-    'Zagueiro Tampão': {
-      aggression: 4,
-      bravery: 4,
-      strength: 4,
-      tackling: 3,
-      pace: 3,
-      jumping: 4,
-    },
-    'Zagueiro de Cobertura': {
-      pace: 5,
-      acceleration: 4,
-      anticipation: 4,
-      positioning: 4,
-      concentration: 3,
-    },
-    'Lateral de Pressão': {
-      stamina: 5,
-      aggression: 4,
-      workRate: 5,
-      tackling: 3,
-      acceleration: 5,
-      pace: 4,
-    },
-    'Lateral de Contenção': {
-      positioning: 5,
-      marking: 4,
-      concentration: 4,
-      strength: 3,
-      tackling: 4,
-    },
-
-    // Meio-Campo
-    'Volante de Proteção': {
-      positioning: 5,
-      anticipation: 4,
-      concentration: 4,
-      strength: 3,
-      stamina: 3,
-      tackling: 3,
-    }, // Novo Anchor
-    'Volante de Pressão': {
-      aggression: 4,
-      workRate: 5,
-      stamina: 5,
-      tackling: 3,
-      acceleration: 4,
-      pace: 4,
-    },
-    'Volante de Cobertura': {
-      pace: 4,
-      stamina: 4,
-      positioning: 4,
-      teamwork: 3,
-      acceleration: 3,
-    }, // Cobre laterais
-    'Meio-Campista de Marcação': {
-      stamina: 5,
-      workRate: 5,
-      teamwork: 4,
-      positioning: 3,
-      marking: 4,
-    },
-
-    // Alas/Atacantes
-    'Extremo de Marcação': {
-      workRate: 5,
-      stamina: 4,
-      tackling: 3,
-      teamwork: 4,
-      acceleration: 4,
-    },
-    'Extremo de Escape': {
-      pace: 5,
-      acceleration: 5,
-      anticipation: 3,
-      flair: 2,
-      offTheBall: 4,
-    }, // Fica na frente
-    'Avançado de Pressão': {
-      workRate: 5,
-      aggression: 4,
-      stamina: 5,
-      teamwork: 4,
-      acceleration: 4,
-      pace: 3,
-    },
-    'Pivô de Escape': {
-      pace: 5,
-      acceleration: 5,
-      finishing: 3,
-      composure: 2,
-      offTheBall: 4,
-    }, // Fica na banheira
+  // Goalkeeping
+  aerial: {
+    label: 'Alcance Aéreo',
+    category: ATTRIBUTE_CATEGORIES.GOALKEEPING,
+  },
+  command: {
+    label: 'Comando de Área',
+    category: ATTRIBUTE_CATEGORIES.GOALKEEPING,
+  },
+  communication: {
+    label: 'Comunicação',
+    category: ATTRIBUTE_CATEGORIES.GOALKEEPING,
+  },
+  eccentricity: {
+    label: 'Excentricidade',
+    category: ATTRIBUTE_CATEGORIES.GOALKEEPING,
+  },
+  handling: {
+    label: 'Jogo de Mãos',
+    category: ATTRIBUTE_CATEGORIES.GOALKEEPING,
+  },
+  kicking: { label: 'Pontapé', category: ATTRIBUTE_CATEGORIES.GOALKEEPING },
+  oneOnOne: {
+    label: 'Um contra Um',
+    category: ATTRIBUTE_CATEGORIES.GOALKEEPING,
+  },
+  reflexes: { label: 'Reflexos', category: ATTRIBUTE_CATEGORIES.GOALKEEPING },
+  rushing: { label: 'Saídas', category: ATTRIBUTE_CATEGORIES.GOALKEEPING },
+  throwing: {
+    label: 'Lançamentos',
+    category: ATTRIBUTE_CATEGORIES.GOALKEEPING,
   },
 };
+
+export const ATTRIBUTE_LIST = Object.entries(ATTRIBUTES_CONFIG).map(
+  ([key, config]) => ({
+    key,
+    ...config,
+  })
+);
+
+export const TACTICAL_METHODOLOGIES = {
+  gk: 'Goleiro',
+  stretching: 'Amplitude',
+  linking: 'Ligação',
+  dynamic: 'Dinâmica',
+  engaged: 'Combate',
+  tracking: 'Cobertura',
+  outlet: 'Referência',
+} as const;

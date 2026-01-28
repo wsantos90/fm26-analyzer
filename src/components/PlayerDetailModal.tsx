@@ -11,16 +11,19 @@ import {
   Zap,
 } from 'lucide-react';
 import { Player } from '../types';
-import { FM26_ROLES } from '../constants';
 import {
-  SUPPORTED_POSITIONS,
+  ATTRIBUTE_LIST,
+  ATTRIBUTE_CATEGORIES,
   POSITIONS_PT_BR,
   PT_ALIAS_TO_ID,
+} from '../constants';
+import { FM26_ROLES, POSITION_TO_ROLES } from '../data/roles';
+import {
+  SUPPORTED_POSITIONS,
   calculatePositionScore,
   getBestPositions,
   getBestRoleAttributes,
 } from '../utils/positionAnalysis';
-import { POSITION_TO_ROLES } from '../utils/roleMapping';
 
 interface PlayerDetailModalProps {
   show: boolean;
@@ -94,176 +97,12 @@ const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
   const topOopRoles = getTopRoles('oop');
   const topGkRoles = getTopRoles('gk');
 
-  const allAttributes = [
-    {
-      name: 'Aceleração',
-      value: p.attributes.acceleration,
-      type: 'Físico',
-      key: 'acceleration',
-    },
-    {
-      name: 'Agilidade',
-      value: p.attributes.agility,
-      type: 'Físico',
-      key: 'agility',
-    },
-    {
-      name: 'Equilíbrio',
-      value: p.attributes.balance,
-      type: 'Físico',
-      key: 'balance',
-    },
-    {
-      name: 'Pulo',
-      value: p.attributes.jumping,
-      type: 'Físico',
-      key: 'jumping',
-    },
-    {
-      name: 'Velocidade',
-      value: p.attributes.pace,
-      type: 'Físico',
-      key: 'pace',
-    },
-    {
-      name: 'Resistência',
-      value: p.attributes.stamina,
-      type: 'Físico',
-      key: 'stamina',
-    },
-    {
-      name: 'Força',
-      value: p.attributes.strength,
-      type: 'Físico',
-      key: 'strength',
-    },
-    {
-      name: 'Agressão',
-      value: p.attributes.aggression,
-      type: 'Mental',
-      key: 'aggression',
-    },
-    {
-      name: 'Antecipação',
-      value: p.attributes.anticipation,
-      type: 'Mental',
-      key: 'anticipation',
-    },
-    {
-      name: 'Bravura',
-      value: p.attributes.bravery,
-      type: 'Mental',
-      key: 'bravery',
-    },
-    {
-      name: 'Frieza',
-      value: p.attributes.composure,
-      type: 'Mental',
-      key: 'composure',
-    },
-    {
-      name: 'Concentração',
-      value: p.attributes.concentration,
-      type: 'Mental',
-      key: 'concentration',
-    },
-    {
-      name: 'Decisões',
-      value: p.attributes.decisions,
-      type: 'Mental',
-      key: 'decisions',
-    },
-    {
-      name: 'Determinação',
-      value: p.attributes.determination,
-      type: 'Mental',
-      key: 'determination',
-    },
-    {
-      name: 'Visão',
-      value: p.attributes.vision,
-      type: 'Mental',
-      key: 'vision',
-    },
-    {
-      name: 'Trabalho em Equipe',
-      value: p.attributes.teamwork,
-      type: 'Mental',
-      key: 'teamwork',
-    },
-    {
-      name: 'Posicionamento',
-      value: p.attributes.positioning,
-      type: 'Mental',
-      key: 'positioning',
-    },
-    {
-      name: 'Improviso',
-      value: p.attributes.flair,
-      type: 'Mental',
-      key: 'flair',
-    },
-    {
-      name: 'Cruzamento',
-      value: p.attributes.crossing,
-      type: 'Técnico',
-      key: 'crossing',
-    },
-    {
-      name: 'Drible',
-      value: p.attributes.dribbling,
-      type: 'Técnico',
-      key: 'dribbling',
-    },
-    {
-      name: 'Finalização',
-      value: p.attributes.finishing,
-      type: 'Técnico',
-      key: 'finishing',
-    },
-    {
-      name: 'Prim. Toque',
-      value: p.attributes.firstTouch,
-      type: 'Técnico',
-      key: 'firstTouch',
-    },
-    {
-      name: 'Cabeceio',
-      value: p.attributes.heading,
-      type: 'Técnico',
-      key: 'heading',
-    },
-    {
-      name: 'Chute Longe',
-      value: p.attributes.longShots,
-      type: 'Técnico',
-      key: 'longShots',
-    },
-    {
-      name: 'Marcação',
-      value: p.attributes.marking,
-      type: 'Técnico',
-      key: 'marking',
-    },
-    {
-      name: 'Passe',
-      value: p.attributes.passing,
-      type: 'Técnico',
-      key: 'passing',
-    },
-    {
-      name: 'Desarme',
-      value: p.attributes.tackling,
-      type: 'Técnico',
-      key: 'tackling',
-    },
-    {
-      name: 'Técnica',
-      value: p.attributes.technique,
-      type: 'Técnico',
-      key: 'technique',
-    },
-  ];
+  const allAttributes = ATTRIBUTE_LIST.map(attr => ({
+    name: attr.label,
+    value: p.attributes[attr.key as keyof typeof p.attributes] || 0,
+    type: attr.category,
+    key: attr.key,
+  }));
 
   const getTrainingPhase = (age: number) => {
     if (age < 18) return 'Desenvolvimento Físico (Base)';
@@ -661,19 +500,25 @@ const PlayerDetailModal: React.FC<PlayerDetailModalProps> = ({
                     </div>
                   )}
 
+                  {selectedPosition === 'GK' &&
+                    renderAttributeSection(
+                      'Atributos de Goleiro',
+                      ATTRIBUTE_CATEGORIES.GOALKEEPING,
+                      'text-orange-400'
+                    )}
                   {renderAttributeSection(
                     'Atributos Físicos',
-                    'Físico',
+                    ATTRIBUTE_CATEGORIES.PHYSICAL,
                     'text-blue-400'
                   )}
                   {renderAttributeSection(
                     'Atributos Mentais',
-                    'Mental',
+                    ATTRIBUTE_CATEGORIES.MENTAL,
                     'text-purple-400'
                   )}
                   {renderAttributeSection(
                     'Atributos Técnicos',
-                    'Técnico',
+                    ATTRIBUTE_CATEGORIES.TECHNICAL,
                     'text-green-400'
                   )}
                 </>
